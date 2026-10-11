@@ -1,0 +1,21 @@
+{
+  "name": "nextly",
+  "version": "1.0.0",
+  "description": "Nextly - Random Video Chat (WebRTC P2P + Socket.io Signaling)",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js",
+    "server": "node server/index.js"
+  },
+  "keywords": [
+    "webrtc",
+    "video-chat",
+    "p2p",
+    "socket.io",
+    "mediapipe",
+    "realtime"
+  ],
+  "author": "Nextly Team",
+  "license": "MIT"
+}

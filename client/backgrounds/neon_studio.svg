@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720">
+  <defs>
+    <radialGradient id="neonGlow1" cx="20%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#4edea3" stop-opacity="0.35"/>
+      <stop offset="60%" stop-color="#0f131c" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#0a0e16" stop-opacity="1"/>
+    </radialGradient>
+    <radialGradient id="neonGlow2" cx="80%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#4cd7f6" stop-opacity="0.3"/>
+      <stop offset="70%" stop-color="#0f131c" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0a0e16" stop-opacity="1"/>
+    </radialGradient>
+  </defs>
+  <rect width="1280" height="720" fill="#0a0e16"/>
+  <rect width="1280" height="720" fill="url(#neonGlow1)"/>
+  <rect width="1280" height="720" fill="url(#neonGlow2)"/>
+  <!-- Ambient studio shelf lines -->
+  <line x1="100" y1="520" x2="1180" y2="520" stroke="#31353e" stroke-width="2" opacity="0.4"/>
+  <circle cx="280" cy="480" r="28" fill="#1c2028" stroke="#4edea3" stroke-width="1.5" opacity="0.6"/>
+  <rect x="960" y="440" width="120" height="80" rx="12" fill="#181c24" stroke="#4cd7f6" stroke-width="1.5" opacity="0.5"/>
+</svg>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720">
+  <defs>
+    <radialGradient id="warmLight" cx="70%" cy="25%" r="70%">
+      <stop offset="0%" stop-color="#ffb2b7" stop-opacity="0.3"/>
+      <stop offset="40%" stop-color="#ff7886" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#0f131c" stop-opacity="1"/>
+    </radialGradient>
+    <linearGradient id="wallGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#181c24"/>
+      <stop offset="100%" stop-color="#0a0e16"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#wallGrad)"/>
+  <rect width="1280" height="720" fill="url(#warmLight)"/>
+  <!-- Minimalist frame artwork -->
+  <rect x="180" y="160" width="180" height="240" rx="6" fill="#1c2028" stroke="#31353e" stroke-width="2"/>
+  <rect x="200" y="180" width="140" height="200" rx="3" fill="#0f131c"/>
+  <circle cx="270" cy="270" r="30" fill="#ff7886" opacity="0.4"/>
+</svg>

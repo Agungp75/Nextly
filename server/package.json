@@ -1,0 +1,27 @@
+{
+  "name": "nextly-server",
+  "version": "1.0.0",
+  "description": "Nextly Signaling Server (Socket.io WebRTC Pairing, In-Memory Queue, Rate Limit & Ban)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  },
+  "keywords": [
+    "nextly",
+    "webrtc",
+    "signaling",
+    "socket.io",
+    "random-video-chat"
+  ],
+  "author": "Nextly Team",
+  "license": "MIT",
+  "devDependencies": {
+    "socket.io-client": "^4.8.4"
+  }
+}

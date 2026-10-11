@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html class="dark" lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <meta content="web_standard" name="shell-type"/>
+  <title>Nextly - Random Video Chat Room</title>
+  <meta name="description" content="Ruang video chat acak 1-on-1 Nextly berbasis WebRTC P2P murni. Mulai, lompat ke pasangan baru, kirim reaksi emoji, dan terapkan filter latar belakang."/>
+
+  <!-- Fonts & Material Symbols -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+
+  <!-- Tailwind CDN for prototype compatibility -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#0f131c",
+            "surface-dim": "#0f131c",
+            "surface-bright": "#353942",
+            "surface-container-lowest": "#0a0e16",
+            "surface-container-low": "#181c24",
+            "surface-container": "#1c2028",
+            "surface-container-high": "#262a33",
+            "surface-container-highest": "#31353e",
+            "on-surface": "#dfe2ee",
+            "on-surface-variant": "#bbcabf",
+            "outline": "#86948a",
+            "outline-variant": "#3c4a42",
+            "primary": "#4edea3",
+            "primary-container": "#10b981",
+            "on-primary": "#003824",
+            "on-primary-container": "#00422b",
+            "primary-fixed": "#6ffbbe",
+            "secondary": "#4cd7f6",
+            "secondary-container": "#03b5d3",
+            "on-secondary": "#003640",
+            "on-secondary-container": "#00424e",
+            "secondary-fixed": "#acedff",
+            "tertiary": "#ffb2b7",
+            "tertiary-container": "#ff7886",
+            "on-tertiary": "#67001b",
+            "on-tertiary-container": "#780021",
+            "error": "#ffb4ab",
+            "error-container": "#93000a",
+            "on-error": "#690005",
+            "background": "#0f131c",
+            "on-background": "#dfe2ee"
+          },
+          borderRadius: {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "space-2xl": "3rem"
+          },
+          fontFamily: {
+            "display-hero": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-md": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-sm": ["Plus Jakarta Sans", "sans-serif"],
+            "body-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "body-md": ["Plus Jakarta Sans", "sans-serif"],
+            "body-sm": ["Plus Jakarta Sans", "sans-serif"],
+            "label-lg": ["Inter", "sans-serif"],
+            "label-md": ["Inter", "sans-serif"],
+            "label-sm": ["Inter", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="bg-background font-body-md text-on-surface antialiased min-h-screen selection:bg-primary selection:text-on-primary">
+
+  <!-- =========================================================================
+       HEADER NAVIGATION
+       ========================================================================= -->
+  <header class="fixed top-0 left-0 right-0 z-50 w-full bg-surface-container-lowest/80 backdrop-blur-xl shadow-[0_1px_16px_rgba(0,0,0,0.35)] border-b border-white/5">
+    <div class="h-16 w-full px-space-md lg:px-space-xl flex items-center justify-between">
+      
+      <!-- Brand & Online Indicator -->
+      <div class="flex items-center gap-space-lg">
+        <a href="index.html" class="flex items-center gap-space-sm group">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-primary-container to-secondary flex items-center justify-center shadow-md shadow-primary/20 group-hover:scale-105 transition-transform">
+            <span class="material-symbols-outlined text-surface-container-lowest text-[19px] font-bold">arrow_forward</span>
+          </div>
+          <span class="font-headline-md text-xl tracking-tight font-bold text-on-surface select-none">Nextly</span>
+        </a>
+
+        <!-- Live Pulse Badge -->
+        <div class="hidden sm:flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-surface-container-high/90 border border-white/5">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-primary shadow-[0_0_8px_#4edea3]"></span>
+          </span>
+          <span class="font-label-md text-xs text-on-surface font-semibold tracking-wide online-counter-val">2.418 online</span>
+        </div>
+      </div>
+
+      <!-- Center Nav Links -->
+      <nav class="hidden md:flex items-center gap-1 p-1 rounded-full bg-surface-container-low/70 border border-white/5">
+        <a class="px-space-md py-1.5 rounded-full font-label-lg text-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="index.html">Home</a>
+        <a class="px-space-md py-1.5 transition-all duration-150 bg-primary-container text-on-primary-container font-semibold rounded-full text-xs" href="nextly.html">Nextly (Video Chat)</a>
+        <a class="px-space-md py-1.5 rounded-full font-label-lg text-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="index.html#community-safety">Panduan Komunitas</a>
+      </nav>
+
+      <!-- Right Actions -->
+      <div class="flex items-center gap-space-sm">
+        <div class="hidden xl:flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-surface-container-high/60 text-secondary border border-secondary/20">
+          <span class="material-symbols-outlined text-[15px]">verified_user</span>
+          <span class="font-label-sm text-[11px] text-on-surface-variant font-medium">Encrypted P2P</span>
+        </div>
+        <a href="index.html" class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors" title="Kembali ke Beranda">
+          <span class="material-symbols-outlined text-[19px]">home</span>
+        </a>
+        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-1 shadow-md">
+          <span class="material-symbols-outlined text-on-primary text-[17px]">person</span>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       MAIN VIDEO CHAT STAGE
+       ========================================================================= -->
+  <main class="w-full pt-16 bg-surface min-h-[calc(100vh-64px)] flex flex-col justify-between">
+    <div class="flex flex-col w-full flex-1">
+      
+      <div class="relative w-full px-space-md lg:px-space-xl py-space-sm flex flex-col gap-space-sm max-w-7xl mx-auto flex-1">
+        
+        <!-- Top Stream Metabar -->
+        <div class="flex items-center justify-between px-space-md py-2 rounded-full bg-surface-container-high/80 backdrop-blur-md border border-white/5 shadow-md">
+          <div class="flex items-center gap-space-md">
+            <div class="flex items-center gap-space-xs">
+              <span class="relative flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-80 bg-primary" id="p2pPulse"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary shadow-[0_0_10px_#4edea3]" id="p2pDot"></span>
+              </span>
+              <span class="font-label-md text-xs font-semibold tracking-wide flex items-center gap-1 text-on-surface" id="streamStatusText">
+                <span class="inline-block px-2 py-0.5 mr-1 rounded-full font-label-sm text-[10px] bg-primary/20 text-primary">Siap Terhubung</span>
+                Tekan Mulai
+              </span>
+            </div>
+            <div class="hidden sm:flex items-center gap-space-xs px-2.5 py-0.5 rounded-full bg-surface-container-lowest/80 text-secondary font-label-sm text-[11px] border border-white/5">
+              <span class="material-symbols-outlined text-[13px]">speed</span>
+              <span id="latencyDisplay">-- ms</span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-space-md">
+            <!-- Hotkey Badges -->
+            <div class="hidden md:flex items-center gap-2 text-on-surface-variant font-label-sm text-[11px]">
+              <span class="flex items-center gap-1 bg-surface-container-lowest/90 px-2 py-0.5 rounded-md shadow-sm font-mono text-[10px] text-on-surface border border-white/5">
+                [SPASI] Next
+              </span>
+              <span class="flex items-center gap-1 bg-surface-container-lowest/90 px-2 py-0.5 rounded-md shadow-sm font-mono text-[10px] text-on-surface border border-white/5">
+                [ESC] Stop
+              </span>
+            </div>
+
+            <!-- Effects Toggle Button -->
+            <button class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-on-surface font-label-md text-xs hover:bg-surface-bright transition-colors shadow-sm border border-white/5" id="effectsToggleBtn" type="button">
+              <span class="material-symbols-outlined text-[15px] text-secondary">auto_fix_high</span>
+              <span>Efek Wajah &amp; AI</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Dual Video Screen Viewport Grid (1:1 Aspect Desktop / Stacked Mobile) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-space-md w-full relative min-h-[420px] lg:h-[540px]">
+          
+          <!-- ===================================================================
+               SISI KIRI: Video Lawan Bicara (Partner Video - Remote Stream)
+               =================================================================== -->
+          <div class="relative w-full h-full min-h-[380px] rounded-2xl bg-surface-container-lowest overflow-hidden flex flex-col justify-between shadow-2xl border border-white/5 group" id="remoteVideoContainer">
+            
+            <!-- Real Remote Video Element -->
+            <video class="absolute inset-0 w-full h-full object-cover bg-black" id="remoteVideo" autoplay playsinline></video>
+
+            <!-- Remote Video Fallback Poster / Cover -->
+            <div class="absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-300" id="remoteStreamCover" style="background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80'); display: none;"></div>
+
+            <!-- Radar Matching Overlay (Active during queue/searching) -->
+            <div class="absolute inset-0 bg-surface-container-lowest/95 backdrop-blur-xl flex flex-col items-center justify-center p-6 text-center z-20" id="matchingOverlay">
+              <div class="relative flex items-center justify-center w-24 h-24 mb-5">
+                <span class="absolute w-24 h-24 rounded-full bg-secondary/20 animate-ping"></span>
+                <span class="absolute w-16 h-16 rounded-full bg-primary/20 animate-pulse"></span>
+                <div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center shadow-lg border border-white/10">
+                  <span class="material-symbols-outlined text-primary text-[26px]">radar</span>
+                </div>
+              </div>
+              <span class="font-headline-md text-lg font-bold text-on-surface mb-1">Mencari Pasangan...</span>
+              <p class="font-body-md text-xs text-on-surface-variant max-w-xs leading-relaxed">
+                Menghubungkan ke ruang WebRTC berikutnya dengan enkripsi peer-to-peer instan.
+              </p>
+              <div class="mt-4 flex items-center gap-2 bg-surface-container px-3 py-1 rounded-full border border-white/5">
+                <span class="inline-block w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                <span class="font-label-sm text-[11px] text-secondary">Menyaring koneksi latensi terendah</span>
+              </div>
+            </div>
+
+            <!-- Floating Reactions Stage Canvas Overlay (For drifting emoji fountain) -->
+            <div class="absolute inset-0 pointer-events-none z-30 overflow-hidden" id="emojiCanvasStage"></div>
+
+            <!-- Partner HUD Top Pill Badges -->
+            <div class="relative z-10 p-space-md flex items-start justify-between">
+              <div class="flex flex-wrap items-center gap-2">
+                <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest/80 backdrop-blur-md shadow-md text-on-surface font-label-md text-xs border border-white/5">
+                  <span class="w-2 h-2 rounded-full inline-block bg-primary shadow-[0_0_6px_#4edea3]"></span>
+                  <span id="partnerIdText">Partner #8294</span>
+                  <span class="text-on-surface-variant text-[11px]">🇮🇩 ID</span>
+                </div>
+                <div class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-lowest/80 backdrop-blur-md shadow-md text-on-surface-variant font-label-sm text-[11px] border border-white/5">
+                  <span class="material-symbols-outlined text-[13px]">schedule</span>
+                  <span id="talkTimer">00:00</span>
+                </div>
+              </div>
+
+              <!-- Direct Report Red Flag Button -->
+              <button class="w-9 h-9 rounded-full bg-error-container/90 text-on-error-container hover:bg-error hover:text-on-error flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95 backdrop-blur-md border border-error/30" id="flagReportBtn" title="Laporkan pengguna ini" type="button">
+                <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">flag</span>
+              </button>
+            </div>
+
+            <!-- Audio Wave Visualizer Bottom Overlay -->
+            <div class="relative z-10 p-space-md flex items-end justify-between bg-gradient-to-t from-surface-container-lowest/90 via-surface-container-lowest/40 to-transparent">
+              <div class="flex items-center gap-2">
+                <!-- Mic Activity Bars -->
+                <div class="flex items-end gap-1 h-4 px-2 py-1 bg-surface-container-lowest/70 backdrop-blur-sm rounded-full border border-white/5" id="remoteAudioBars">
+                  <span class="audio-bar w-1 rounded-full bg-secondary h-2"></span>
+                  <span class="audio-bar w-1 rounded-full bg-primary h-3"></span>
+                  <span class="audio-bar w-1 rounded-full bg-secondary h-1.5"></span>
+                  <span class="audio-bar w-1 rounded-full bg-primary h-2.5"></span>
+                </div>
+                <span class="font-label-sm text-[11px] text-on-surface-variant">Audio P2P Jernih</span>
+              </div>
+              <div class="text-right">
+                <span class="font-label-sm text-[10px] text-on-surface-variant block uppercase tracking-wider">Protokol</span>
+                <span class="font-label-md text-xs font-semibold text-secondary">DTLS/SRTP 256-bit</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ===================================================================
+               SISI KANAN: Video Kamu (Local Camera Stream)
+               =================================================================== -->
+          <div class="relative w-full h-full min-h-[380px] rounded-2xl bg-surface-container-lowest overflow-hidden flex flex-col justify-between shadow-2xl border border-white/5" id="localVideoContainer">
+            
+            <!-- Real Local Video Preview Element (Canvas processed or direct) -->
+            <video class="absolute inset-0 w-full h-full object-cover bg-black" id="localVideo" autoplay playsinline muted></video>
+
+            <!-- Local Video Fallback Poster / Cover -->
+            <div class="absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-300" id="localStreamCover" style="background-image: url('https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=800&q=80');"></div>
+
+            <!-- Camera Required Enforcement Overlay -->
+            <div class="absolute inset-0 bg-surface-container-lowest/95 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center z-30 hidden" id="cameraRequiredOverlay">
+              <div class="w-16 h-16 rounded-full bg-error/20 text-error flex items-center justify-center mb-3 border border-error/30 animate-pulse">
+                <span class="material-symbols-outlined text-[32px]">videocam_off</span>
+              </div>
+              <span class="font-headline-sm text-sm text-on-surface font-bold">Kamera Wajib Selalu Aktif</span>
+              <p class="font-body-sm text-xs text-on-surface-variant mt-1.5 max-w-xs leading-relaxed">
+                Di Nextly, kamera tidak boleh mati. Obrolan dijeda hingga akses kamera Anda aktif kembali untuk mencegah layar hitam.
+              </p>
+              <button class="mt-4 px-4 py-2 rounded-full bg-primary-container text-on-primary-container font-label-md text-xs font-bold hover:brightness-110 active:scale-95 transition-all shadow-md flex items-center gap-1.5" id="reconnectCamBtn" type="button">
+                <span class="material-symbols-outlined text-[16px]">refresh</span>
+                <span>Nyalakan Kamera Kembali</span>
+              </button>
+            </div>
+
+            <!-- Local HUD Top Pill Badges -->
+            <div class="relative z-10 p-space-md flex items-start justify-between">
+              <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest/80 backdrop-blur-md shadow-md text-on-surface font-label-md text-xs border border-white/5">
+                  <span class="w-2 h-2 rounded-full bg-secondary inline-block"></span>
+                  <span>Kamera Kamu (Lokal)</span>
+                </div>
+                <div class="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-high/80 backdrop-blur-md text-on-surface font-label-sm text-[11px] shadow-md border border-white/5" id="activeFilterBadge">
+                  <span class="material-symbols-outlined text-[13px] text-primary">filter_vintage</span>
+                  <span id="activeFilterName">Asli / Normal</span>
+                </div>
+              </div>
+
+              <!-- Quick Hardware Status Toggles (Mic, Flip Camera, Toggle Mirror, Active Badge) -->
+              <div class="flex items-center gap-1.5">
+                <button class="w-9 h-9 rounded-full bg-surface-container-lowest/80 text-on-surface hover:bg-surface-bright flex items-center justify-center shadow-md transition-colors backdrop-blur-md border border-white/5" id="toggleMicBtn" title="Bisukan / Nyalakan Mikrofon" type="button">
+                  <span class="material-symbols-outlined text-[18px]" id="micIcon">mic</span>
+                </button>
+                <button class="w-9 h-9 rounded-full bg-surface-container-lowest/80 text-on-surface hover:bg-surface-bright flex items-center justify-center shadow-md transition-colors backdrop-blur-md border border-white/5" id="flipCameraBtn" title="Balik Kamera Depan / Belakang" type="button">
+                  <span class="material-symbols-outlined text-[18px]" id="flipCamIcon">flip_camera_android</span>
+                </button>
+                <button class="w-9 h-9 rounded-full bg-surface-container-lowest/80 text-secondary hover:bg-surface-bright flex items-center justify-center shadow-md transition-colors backdrop-blur-md border border-white/5" id="toggleMirrorBtn" title="Balik Cermin Horizontal (Mirror / Normal)" type="button">
+                  <span class="material-symbols-outlined text-[18px]">flip</span>
+                </button>
+                <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-surface-container-lowest/85 text-primary border border-primary/25 backdrop-blur-md font-label-sm text-[11px] shadow-md select-none" id="cameraActiveBadge" title="Kamera wajib selalu aktif selama menggunakan Nextly">
+                  <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                  <span class="material-symbols-outlined text-[15px]">videocam</span>
+                  <span class="font-semibold hidden lg:inline">Aktif</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Local Info Tray -->
+            <div class="relative z-10 p-space-md flex items-end justify-between bg-gradient-to-t from-surface-container-lowest/90 via-surface-container-lowest/40 to-transparent">
+              <div class="flex items-center gap-2">
+                <!-- Local Mic Activity Bars -->
+                <div class="flex items-end gap-1 h-4 px-2 py-1 bg-surface-container-lowest/70 backdrop-blur-sm rounded-full border border-white/5" id="localAudioBars">
+                  <span class="audio-bar w-1 rounded-full bg-primary h-2"></span>
+                  <span class="audio-bar w-1 rounded-full bg-primary h-3"></span>
+                  <span class="audio-bar w-1 rounded-full bg-primary h-1.5"></span>
+                  <span class="audio-bar w-1 rounded-full bg-primary h-2.5"></span>
+                </div>
+                <span class="px-2.5 py-0.5 rounded-full font-label-sm text-[10px] font-semibold bg-primary/20 text-primary border border-primary/30">
+                  HD 1080p 60fps
+                </span>
+                <span class="font-body-sm text-[11px] text-on-surface-variant hidden sm:inline">Hardware Accelerated</span>
+              </div>
+              <span class="text-on-surface-variant font-label-sm text-[11px]" id="mirrorStatusText">Self-View: Mirror</span>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ===================================================================
+             FLOATING REAKSI EMOJI BAR (WebRTC DataChannel Triggers)
+             =================================================================== -->
+        <div class="flex justify-center -mt-1 z-30">
+          <div class="flex items-center gap-1 sm:gap-2 px-3 py-1.5 rounded-full bg-surface-container-high/90 backdrop-blur-xl shadow-xl border border-white/10">
+            <span class="font-label-sm text-xs text-on-surface-variant hidden md:inline ml-1 mr-1">Kirim Reaksi:</span>
+            <button class="emoji-trigger p-1.5 hover:scale-125 transition-transform text-xl active:scale-95" data-emoji="🔥" title="Keren!" type="button">🔥</button>
+            <button class="emoji-trigger p-1.5 hover:scale-125 transition-transform text-xl active:scale-95" data-emoji="😂" title="Lucu!" type="button">😂</button>
+            <button class="emoji-trigger p-1.5 hover:scale-125 transition-transform text-xl active:scale-95" data-emoji="❤️" title="Suka!" type="button">❤️</button>
+            <button class="emoji-trigger p-1.5 hover:scale-125 transition-transform text-xl active:scale-95" data-emoji="👏" title="Tepuk Tangan" type="button">👏</button>
+            <button class="emoji-trigger p-1.5 hover:scale-125 transition-transform text-xl active:scale-95" data-emoji="😮" title="Kaget!" type="button">😮</button>
+            <button class="emoji-trigger p-1.5 hover:scale-125 transition-transform text-xl active:scale-95" data-emoji="👋" title="Halo!" type="button">👋</button>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             BILAH KONTROL UTAMA (ACTION BAR / DOCK)
+             =================================================================== -->
+        <div class="w-full flex justify-center pb-2 z-20">
+          <div class="w-full max-w-2xl px-space-md py-2.5 rounded-full bg-surface-container-high/95 backdrop-blur-2xl shadow-2xl border border-white/10 flex items-center justify-between gap-2 sm:gap-4">
+            
+            <!-- 1. Tombol Start / Mulai -->
+            <button class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-full btn-primary-gradient font-label-lg text-sm shadow-lg active:scale-95 transition-all" id="startBtn" type="button">
+              <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+              <span>Mulai</span>
+            </button>
+
+            <!-- 2. Tombol Next (Core Loop Alur Cepat) -->
+            <button class="flex-1 flex items-center justify-center gap-2 py-3 px-5 rounded-full btn-next-action font-label-lg text-sm shadow-lg active:scale-95 transition-all group" id="nextBtn" type="button">
+              <span>Next</span>
+              <span class="material-symbols-outlined text-[20px] group-hover:translate-x-0.5 transition-transform">skip_next</span>
+            </button>
+
+            <!-- 3. Tombol Stop -->
+            <button class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-full btn-stop-action font-label-lg text-sm shadow-md active:scale-95 transition-all" id="stopBtn" type="button">
+              <span class="material-symbols-outlined text-[18px]">stop</span>
+              <span>Stop</span>
+            </button>
+
+            <!-- 4. Tombol Report -->
+            <button class="flex items-center justify-center p-3 rounded-full btn-report-action shadow-md active:scale-95 transition-all" id="reportModalTrigger" title="Laporkan Perilaku" type="button">
+              <span class="material-symbols-outlined text-[19px]">report</span>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             PANEL PENGATURAN EFEK CEPAT (Studio MediaPipe & Filter Real-time)
+             =================================================================== -->
+        <div class="w-full rounded-2xl bg-surface-container-low border border-white/10 p-space-lg shadow-2xl hidden transition-all duration-300" id="effectsDrawer">
+          <div class="flex items-center justify-between pb-3 border-b border-white/5">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-secondary text-[22px]">tune</span>
+              <h3 class="font-headline-sm text-sm font-bold text-on-surface">Studio MediaPipe &amp; Filter Real-time (Client-side)</h3>
+            </div>
+            <button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface" id="closeEffectsBtn" type="button">
+              <span class="material-symbols-outlined text-[18px]">close</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg pt-3">
+            <!-- Background Segmentation Filters -->
+            <div class="flex flex-col gap-2">
+              <div class="flex items-center justify-between">
+                <span class="font-label-md text-xs font-semibold text-on-surface-variant">Latar Belakang Cerdas AI</span>
+                <span class="font-label-sm text-[10px] text-primary">MediaPipe Selfie Segmentation</span>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <button class="bg-filter-pill active px-3 py-2 rounded-xl bg-surface-container-high text-on-surface text-center font-label-md text-xs hover:bg-surface-bright transition-all shadow-sm border border-white/5" data-bg="normal" type="button">
+                  Normal
+                </button>
+                <button class="bg-filter-pill px-3 py-2 rounded-xl bg-surface-container text-on-surface-variant text-center font-label-md text-xs hover:bg-surface-bright transition-all shadow-sm border border-white/5" data-bg="blur" type="button">
+                  Blur Lembut
+                </button>
+                <button class="bg-filter-pill px-3 py-2 rounded-xl bg-surface-container text-on-surface-variant text-center font-label-md text-xs hover:bg-surface-bright transition-all shadow-sm border border-white/5" data-bg="dark" type="button">
+                  Studio Dark
+                </button>
+                <button class="bg-filter-pill px-3 py-2 rounded-xl bg-surface-container text-on-surface-variant text-center font-label-md text-xs hover:bg-surface-bright transition-all shadow-sm border border-white/5" data-bg="gradient" type="button">
+                  Gradien Virtual
+                </button>
+              </div>
+            </div>
+
+            <!-- Color Grading / LUTs -->
+            <div class="flex flex-col gap-2">
+              <div class="flex items-center justify-between">
+                <span class="font-label-md text-xs font-semibold text-on-surface-variant">Color Grading Wajah (LUT)</span>
+                <span class="font-label-sm text-[10px] text-secondary">Canvas Pipeline 30fps</span>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                <button class="tone-pill active px-3 py-2 rounded-xl bg-surface-container-high text-on-surface text-center font-label-md text-xs hover:bg-surface-bright transition-all shadow-sm border border-white/5" data-tone="original" type="button">
+                  Asli
+                </button>
+                <button class="tone-pill px-3 py-2 rounded-xl bg-surface-container text-on-surface-variant text-center font-label-md text-xs hover:bg-surface-bright transition-all shadow-sm border border-white/5" data-tone="warm" type="button">
+                  Warm Golden
+                </button>
+                <button class="tone-pill px-3 py-2 rounded-xl bg-surface-container text-on-surface-variant text-center font-label-md text-xs hover:bg-surface-bright transition-all shadow-sm border border-white/5" data-tone="cyber" type="button">
+                  Cyber Cool
+                </button>
+                <button class="tone-pill px-3 py-2 rounded-xl bg-surface-container text-on-surface-variant text-center font-label-md text-xs hover:bg-surface-bright transition-all shadow-sm border border-white/5" data-tone="sepia" type="button">
+                  Vintage Sepia
+                </button>
+                <button class="tone-pill px-3 py-2 rounded-xl bg-surface-container text-on-surface-variant text-center font-label-md text-xs hover:bg-surface-bright transition-all shadow-sm border border-white/5" data-tone="bw" type="button">
+                  B&amp;W Minimal
+                </button>
+                <button class="tone-pill px-3 py-2 rounded-xl bg-surface-container text-on-surface-variant text-center font-label-md text-xs hover:bg-surface-bright transition-all shadow-sm border border-white/5" data-tone="pastel" type="button">
+                  Pastel Soft
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       SAFETY REPORT MODAL SHEET
+       ========================================================================= -->
+  <div class="fixed inset-0 z-50 bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-center p-4 hidden" id="reportModal">
+    <div class="w-full max-w-md bg-surface-container-low border border-white/10 rounded-2xl p-space-xl shadow-2xl flex flex-col gap-space-md">
+      <div class="flex items-start justify-between">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-error text-[24px]">warning</span>
+          <h2 class="font-headline-sm text-sm font-bold text-on-surface">Laporkan Partner Saat Ini</h2>
+        </div>
+        <button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface" id="closeReportBtn" type="button">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <p class="font-body-md text-xs text-on-surface-variant leading-relaxed">
+        Tindakan ini akan langsung memutuskan sambungan dan mengirim laporan keamanan otomatis ke server Nextly untuk moderasi IP.
+      </p>
+
+      <form class="flex flex-col gap-2" id="reportForm">
+        <label class="flex items-center gap-3 p-3 rounded-xl bg-surface-container hover:bg-surface-container-high cursor-pointer transition-colors border border-white/5">
+          <input checked class="accent-primary h-4 w-4" name="reportReason" type="radio" value="nudity"/>
+          <span class="font-body-md text-xs text-on-surface">Konten Terlarang / Ketelanjangan</span>
+        </label>
+        <label class="flex items-center gap-3 p-3 rounded-xl bg-surface-container hover:bg-surface-container-high cursor-pointer transition-colors border border-white/5">
+          <input class="accent-primary h-4 w-4" name="reportReason" type="radio" value="harassment"/>
+          <span class="font-body-md text-xs text-on-surface">Pelecehan / Ujaran Kebencian</span>
+        </label>
+        <label class="flex items-center gap-3 p-3 rounded-xl bg-surface-container hover:bg-surface-container-high cursor-pointer transition-colors border border-white/5">
+          <input class="accent-primary h-4 w-4" name="reportReason" type="radio" value="spam"/>
+          <span class="font-body-md text-xs text-on-surface">Spam / Bot / Promosi Komersial</span>
+        </label>
+        <label class="flex items-center gap-3 p-3 rounded-xl bg-surface-container hover:bg-surface-container-high cursor-pointer transition-colors border border-white/5">
+          <input class="accent-primary h-4 w-4" name="reportReason" type="radio" value="minor"/>
+          <span class="font-body-md text-xs text-on-surface">Pelanggaran Perlindungan Anak</span>
+        </label>
+
+        <div class="flex items-center gap-3 pt-3">
+          <button class="flex-1 py-2.5 rounded-full bg-surface-container text-on-surface font-label-lg text-xs hover:bg-surface-bright transition-colors border border-white/5" id="cancelReportBtn" type="button">
+            Batal
+          </button>
+          <button class="flex-1 py-2.5 rounded-full bg-error text-on-error font-label-lg text-xs font-bold shadow-lg hover:brightness-110 transition-colors" type="submit">
+            Kirim Laporan
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full bg-surface-container-highest text-on-surface font-label-md text-xs shadow-2xl flex items-center gap-2 pointer-events-none transition-all duration-300 opacity-0 translate-y-4 border border-white/10" id="toastNotification">
+    <span class="material-symbols-outlined text-primary text-[18px]">info</span>
+    <span id="toastMsg">Tindakan berhasil</span>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/reactions.js"></script>
+  <script src="js/effects.js"></script>
+  <script src="js/nextly.js"></script>
+
+</body>
+</html>

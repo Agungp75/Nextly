@@ -1,0 +1,565 @@
+<!DOCTYPE html><html class="dark" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><title>Nextly - Instant Peer Video Chat</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-tertiary-fixed-variant": "#92002a", "on-error": "#690005", "inverse-primary": "#006c49", "primary-fixed-dim": "#4edea3", "on-secondary-fixed-variant": "#004e5c", "inverse-on-surface": "#2c3039", "on-surface": "#dfe2ee", "outline": "#86948a", "on-tertiary": "#67001b", "on-primary-container": "#00422b", "on-secondary": "#003640", "outline-variant": "#3c4a42", "on-secondary-fixed": "#001f26", "surface-container-highest": "#31353e", "on-tertiary-container": "#780021", "inverse-surface": "#dfe2ee", "on-secondary-container": "#00424e", "surface-container": "#1c2028", "tertiary-container": "#ff7886", "surface": "#0f131c", "tertiary-fixed": "#ffdadb", "surface-bright": "#353942", "on-surface-variant": "#bbcabf", "secondary-fixed-dim": "#4cd7f6", "tertiary-fixed-dim": "#ffb2b7", "surface-tint": "#4edea3", "error-container": "#93000a", "surface-container-high": "#262a33", "primary-fixed": "#6ffbbe", "on-tertiary-fixed": "#40000d", "on-background": "#dfe2ee", "primary-container": "#10b981", "secondary": "#4cd7f6", "on-primary": "#003824", "background": "#0f131c", "surface-dim": "#0f131c", "surface-container-low": "#181c24", "secondary-container": "#03b5d3", "surface-variant": "#31353e", "tertiary": "#ffb2b7", "surface-container-lowest": "#0a0e16", "on-primary-fixed-variant": "#005236", "secondary-fixed": "#acedff", "on-error-container": "#ffdad6", "on-primary-fixed": "#002113", "primary": "#4edea3", "error": "#ffb4ab" }, "borderRadius": { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }, "spacing": { "space-2xl": "3rem", "gutter": "1rem", "space-sm": "0.5rem", "space-xl": "2rem", "space-md": "1rem", "margin-mobile": "0.75rem", "space-xs": "0.25rem", "space-lg": "1.5rem", "margin": "1.5rem", "gutter-mobile": "0.5rem" }, "fontFamily": { "body-md": [ "Plus Jakarta Sans" ], "label-lg": [ "Inter" ], "body-lg": [ "Plus Jakarta Sans" ], "body-sm": [ "Plus Jakarta Sans" ], "display-hero": [ "Plus Jakarta Sans" ], "headline-lg-mobile": [ "Plus Jakarta Sans" ], "display-hero-mobile": [ "Plus Jakarta Sans" ], "headline-md": [ "Plus Jakarta Sans" ], "headline-sm": [ "Plus Jakarta Sans" ], "headline-lg": [ "Plus Jakarta Sans" ], "label-sm": [ "Inter" ], "label-md": [ "Inter" ] }, "fontSize": { "body-md": [ "14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" } ], "label-lg": [ "14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600" } ], "body-lg": [ "16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" } ], "body-sm": [ "12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" } ], "display-hero": [ "48px", { "lineHeight": "56px", "letterSpacing": "-0.03em", "fontWeight": "700" } ], "headline-lg-mobile": [ "24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "display-hero-mobile": [ "32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" } ], "headline-md": [ "20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "headline-sm": [ "16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "600" } ], "headline-lg": [ "32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "label-sm": [ "10px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600" } ], "label-md": [ "12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "500" } ] } } } };</script></head><body class="bg-background font-body-md text-on-surface antialiased min-h-screen selection:bg-primary selection:text-on-primary"><header class="fixed top-0 left-0 right-0 z-50 w-full bg-surface-container-lowest/80 backdrop-blur-xl shadow-[0_1px_16px_rgba(0,0,0,0.35)]"><div class="h-16 w-full px-space-md lg:px-space-xl flex items-center justify-between"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-sm"><img alt="Nextly Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-Q8q7pOHgXME-rQyCFoJ4gGBAhuya8X90LyAM4UOp9Fn1D-vFH_Mfdn5n9dfPNOuUCEO1JcVl18cDvlx8NdiVLxgVtd1IpjsqAmSPHg3qKnBni55tlbjxPmQf4qBGmGIypQ7V-3hYWyw81g-iy3a4Lvk9gofgFMoCOGf9lZ8NIGhhSEqNRCGkwTrW3nCiI69UdnVA4SsQna8RdR80Ssc-8ozk-NrSitBWR_LwBTeBHUix8-YIJ98b"><span class="font-headline-md text-headline-md tracking-tight font-bold text-on-surface select-none">Nextly</span></div><div class="hidden sm:flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-surface-container-high/90"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background-color: #c084fc;"></span><span class="relative inline-flex rounded-full h-2 w-2" style="background-color: #c084fc; box-shadow: 0 0 8px #c084fc;"></span></span><span class="font-label-md text-label-md text-on-surface font-semibold tracking-wide">2,418 online</span></div></div><nav class="hidden md:flex items-center gap-space-xs p-1 rounded-full bg-surface-container-low/70" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded-full"><a class="px-space-md py-1.5 rounded-full font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" data-path="home" href="#">Home</a><a class="px-space-md py-1.5 rounded-full font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" data-path="nextly-video-chat" href="#">Nextly (Video Chat)</a><a class="px-space-md py-1.5 rounded-full font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" data-path="community-safety" href="#">Community Safety</a></nav><div class="flex items-center gap-space-sm"><div class="hidden xl:flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-surface-container-high/60 text-secondary"><span class="material-symbols-outlined text-[16px]">verified_user</span><span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Encrypted P2P</span></div><button aria-label="Audio Settings" class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">volume_up</span></button><button aria-label="Theme Settings" class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">dark_mode</span></button><div class="w-8 h-8 rounded-full flex items-center justify-center ml-1 shadow-md" style="background: linear-gradient(135deg, rgb(168, 85, 247), rgb(147, 51, 234));"><span class="material-symbols-outlined text-white text-[18px]">person</span></div></div></div></header><style id="neon-purple-overrides">:root { --primary-purple: #c084fc; --primary-deep: #9333ea; --primary-light: #f0dbff; --primary-dark: #400071; } .bg-primary { background-color: #c084fc !important; } .bg-primary-container { background-color: #9333ea !important; color: #ffffff !important; } .text-primary { color: #c084fc !important; } .text-on-primary-container { color: #ffffff !important; } .bg-primary\/20 { background-color: rgba(192, 132, 252, 0.2) !important; } .accent-primary { accent-color: #c084fc !important; } #startBtn { background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%) !important; color: #ffffff !important; box-shadow: 0 4px 20px rgba(168, 85, 247, 0.45) !important; } #startBtn:hover { filter: brightness(1.15) !important; } .p2p-neon-purple { background-color: #c084fc !important; box-shadow: 0 0 12px rgba(192, 132, 252, 0.8) !important; }</style><main class="w-full pt-16 bg-surface min-h-[calc(100vh-64px)]"><div class="flex flex-col w-full">
+<!-- Interactive Canvas & P2P Stream Stage -->
+<div class="relative w-full px-space-md lg:px-space-xl py-space-md flex flex-col gap-space-md max-w-7xl mx-auto">
+<!-- Top Stream Metabar -->
+<div class="flex items-center justify-between px-space-md py-space-sm rounded-full bg-surface-container-high/80 backdrop-blur-md shadow-md">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="relative flex h-2.5 w-2.5"><span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-80" id="p2pPulse" style="background-color: #c084fc;"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5" id="p2pDot" style="background-color: #c084fc; box-shadow: 0 0 10px #c084fc;"></span></span>
+<span class="font-label-md text-label-md font-semibold tracking-wide" id="streamStatusText" style="color: rgb(240, 219, 255);"><span class="inline-block px-2 py-0.5 mr-1.5 rounded-full font-label-sm text-[11px]" style="background-color: rgba(192, 132, 252, 0.2); color: #c084fc;">P2P Terhubung</span>via WebRTC</span>
+</div>
+<div class="hidden sm:flex items-center gap-space-xs px-2.5 py-0.5 rounded-full bg-surface-container-lowest/80 text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">speed</span>
+<span id="latencyDisplay" class="">28 ms (Direct P2P)</span>
+</div>
+</div>
+<div class="flex items-center gap-space-md">
+<!-- Hotkey Badges -->
+<div class="hidden md:flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm">
+<span class="flex items-center gap-1 bg-surface-container-lowest/90 px-2 py-0.5 rounded-md shadow-sm font-mono text-[11px] text-on-surface">
+            [SPASI] Next
+          </span>
+<span class="flex items-center gap-1 bg-surface-container-lowest/90 px-2 py-0.5 rounded-md shadow-sm font-mono text-[11px] text-on-surface">
+            [ESC] Stop
+          </span>
+</div>
+<button class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-bright transition-colors shadow-sm" id="effectsToggleBtn">
+<span class="material-symbols-outlined text-[16px] text-secondary">auto_fix_high</span>
+<span class="">Efek Wajah &amp; AI</span>
+</button>
+</div>
+</div>
+<!-- Dual Video Screen Viewport Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-space-md w-full relative min-h-[460px] lg:h-[580px]">
+<!-- SISI KIRI: Video Lawan Bicara (Partner Video - Remote Stream) -->
+<div class="relative w-full h-full min-h-[440px] rounded-lg bg-surface-container-lowest overflow-hidden flex flex-col justify-between shadow-2xl group" id="remoteVideoContainer">
+<!-- Remote Video Background Stream Simulated -->
+<div class="absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-300" data-alt="POV webcam feed of a friendly young person smiling casually at the camera in a modern ambient bedroom with soft cyan and mint neon room lighting, natural webcam quality, 4k ultra-crisp resolution." id="remoteStreamCover" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAVeiJMdxgnyzLnD77WD9PaWsmYgFVAPxhHFdjwZtt9RqYfpQjLvgz_H2Shg9el5g9BqCpvn3zx0tXZfUxBql2idFkCpq3TaeA-L9mX2WEIO_lBB1MKj5ZP9QUcyGkFlwfRdFbVAsmhmSEsZ1A2PSy-xYPcNSctswcKPKyFL6qkmptgKQ1p2qzhmJKARDB1_qZhWLk8lAPeN_cN0qh9_1aTV5yrjFhVtfS--i8nmHeFoTypjPpWIsjE')"></div>
+<!-- Radar Matching View Overlay (Hidden when connected) -->
+<div class="absolute inset-0 bg-surface-container-lowest/95 backdrop-blur-xl flex flex-col items-center justify-center p-6 text-center z-20 hidden" id="matchingOverlay">
+<div class="relative flex items-center justify-center w-28 h-28 mb-6">
+<span class="absolute w-28 h-28 rounded-full bg-secondary/20 animate-ping"></span>
+<span class="absolute w-20 h-20 rounded-full bg-primary/20 animate-pulse"></span>
+<div class="w-14 h-14 rounded-full bg-surface-container-highest flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-primary text-[28px]">radar</span>
+</div>
+</div>
+<span class="font-headline-md text-headline-md font-bold text-on-surface mb-1">Mencari Pasangan...</span>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs">Menghubungkan ke ruang WebRTC berikutnya dengan enkripsi peer-to-peer instan.</p>
+<div class="mt-4 flex items-center gap-2 bg-surface-container px-3 py-1 rounded-full">
+<span class="inline-block w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-secondary">Menyaring koneksi latensi terendah</span>
+</div>
+</div>
+<!-- Floating Reactions Stage Canvas Overlay -->
+<div class="absolute inset-0 pointer-events-none z-30 overflow-hidden" id="emojiCanvasStage"></div>
+<!-- Partner HUD Top Pill Badges -->
+<div class="relative z-10 p-space-md flex items-start justify-between">
+<div class="flex flex-wrap items-center gap-2">
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest/80 backdrop-blur-md shadow-md text-on-surface font-label-md text-label-md">
+<span class="w-2 h-2 rounded-full inline-block" style="background-color: rgb(192, 132, 252); box-shadow: rgb(192, 132, 252) 0px 0px 6px;"></span>
+<span id="partnerIdText" class="">Partner #8294</span>
+<span class="text-on-surface-variant text-xs">🇮🇩 ID</span>
+</div>
+<div class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-lowest/80 backdrop-blur-md shadow-md text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+<span id="talkTimer" class="">06:40</span>
+</div>
+</div>
+<!-- Direct Report Red Flag Button -->
+<button class="w-10 h-10 rounded-full bg-error-container/90 text-on-error-container hover:bg-error hover:text-on-error flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95 backdrop-blur-md" id="flagReportBtn" title="Laporkan pengguna ini">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">flag</span>
+</button>
+</div>
+<!-- Audio Wave Visualizer Bottom Overlay -->
+<div class="relative z-10 p-space-md flex items-end justify-between bg-gradient-to-t from-surface-container-lowest/90 via-surface-container-lowest/40 to-transparent">
+<div class="flex items-center gap-2">
+<!-- Simulated Mic Activity Bars -->
+<div class="flex items-end gap-0.5 h-4 px-2 py-1 bg-surface-container-lowest/70 backdrop-blur-sm rounded-full"><span class="w-1 rounded-full animate-[pulse_0.8s_ease-in-out_infinite] h-2" style="background-color: rgb(192, 132, 252);"></span><span class="w-1 rounded-full animate-[pulse_0.5s_ease-in-out_infinite] h-3.5" style="background-color: rgb(168, 85, 247);"></span><span class="w-1 rounded-full animate-[pulse_0.7s_ease-in-out_infinite] h-1.5" style="background-color: rgb(192, 132, 252);"></span><span class="w-1 rounded-full animate-[pulse_0.9s_ease-in-out_infinite] h-2.5" style="background-color: rgb(168, 85, 247);"></span></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Audio P2P Jernih</span>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Protokol</span>
+<span class="font-label-md text-label-md font-semibold text-secondary">DTLS/SRTP 256-bit</span>
+</div>
+</div>
+</div>
+<!-- SISI KANAN: Video Kamu (Local Camera Stream) -->
+<div class="relative w-full h-full min-h-[440px] rounded-lg bg-surface-container-lowest overflow-hidden flex flex-col justify-between shadow-2xl" id="localVideoContainer">
+<!-- Local User Video Stream Simulated -->
+<div class="absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-300" data-alt="POV high resolution front webcam shot of an enthusiastic creator looking straight into the lens, warm interior studio room, stylish desktop setup, soft depth of field." id="localStreamCover" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCvRGPc8nKak1GKoRy5HL9531UuoJMobAw13IL78T9MMeNZNKKs2eSWldqRhq2J0FOR7I3VjJNIx0T7CxC0J_inoHplu6i2oxatzG0l1AGptwbnW97kfXlaKFQDn7cOkhhg7lA4ar3vl83BqgfQjZkClq_CJZCHzLljVpyU10J8t8rWleFB3_MgnTw0DPHX2c9f6iiXzKVG6trfrgkICNbq55MGW1bu7-yzA8r7rYakEhuW2_rKxCWr')"></div>
+<!-- Camera Muted Overlay -->
+<div class="absolute inset-0 bg-surface-container-lowest/95 flex flex-col items-center justify-center p-6 text-center z-20 hidden" id="cameraMutedLayer">
+<div class="w-16 h-16 rounded-full bg-surface-container-high flex items-center justify-center mb-3 text-outline">
+<span class="material-symbols-outlined text-[32px]">videocam_off</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Kamera Dinonaktifkan</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-1">Lawan bicara hanya mendengar suara audio Anda.</span>
+</div>
+<!-- Local HUD Top Pill Badges -->
+<div class="relative z-10 p-space-md flex items-start justify-between">
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest/80 backdrop-blur-md shadow-md text-on-surface font-label-md text-label-md">
+<span class="w-2 h-2 rounded-full bg-secondary inline-block"></span>
+<span class="">Kamera Kamu (Lokal)</span>
+</div>
+<div class="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-high/80 backdrop-blur-md text-on-surface font-label-sm text-label-sm shadow-md" id="activeFilterBadge">
+<span class="material-symbols-outlined text-[13px]" style="color: rgb(192, 132, 252);">filter_vintage</span>
+<span id="activeFilterName" class="">Asli / Normal</span>
+</div>
+</div>
+<!-- Quick Hardware Status Toggles -->
+<div class="flex items-center gap-1.5">
+<button class="w-9 h-9 rounded-full bg-surface-container-lowest/80 text-on-surface hover:bg-surface-bright flex items-center justify-center shadow-md transition-colors backdrop-blur-md" id="toggleMicBtn" title="Bisukan Mikrofon">
+<span class="material-symbols-outlined text-[18px]" id="micIcon">mic</span>
+</button>
+<button class="w-9 h-9 rounded-full bg-surface-container-lowest/80 text-on-surface hover:bg-surface-bright flex items-center justify-center shadow-md transition-colors backdrop-blur-md" id="toggleCamBtn" title="Matikan Kamera">
+<span class="material-symbols-outlined text-[18px]" id="camIcon">videocam</span>
+</button>
+</div>
+</div>
+<!-- Bottom Local Info Tray -->
+<div class="relative z-10 p-space-md flex items-end justify-between bg-gradient-to-t from-surface-container-lowest/90 via-surface-container-lowest/40 to-transparent">
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full font-label-sm text-label-sm font-semibold" style="background-color: rgba(192, 132, 252, 0.2); color: rgb(192, 132, 252); border: 1px solid rgba(192, 132, 252, 0.35);">HD 1080p 60fps</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant hidden sm:inline">Hardware Accelerated</span>
+</div>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Self-View Mirroring</span>
+</div>
+</div>
+</div>
+<!-- Floating Reaksi Emoji Bar (WebRTC DataChannel Triggers) -->
+<div class="flex justify-center -mt-2 z-30">
+<div class="flex items-center gap-1 sm:gap-2 px-3 py-1.5 rounded-full bg-surface-container-high/90 backdrop-blur-xl shadow-xl">
+<span class="font-label-sm text-label-sm text-on-surface-variant hidden md:inline ml-1 mr-1">Kirim Reaksi:</span>
+<button class="emoji-trigger p-2 hover:scale-125 transition-transform text-xl active:scale-95" data-emoji="🔥" title="Keren!">🔥</button>
+<button class="emoji-trigger p-2 hover:scale-125 transition-transform text-xl active:scale-95" data-emoji="😂" title="Lucu!">😂</button>
+<button class="emoji-trigger p-2 hover:scale-125 transition-transform text-xl active:scale-95" data-emoji="❤️" title="Suka!">❤️</button>
+<button class="emoji-trigger p-2 hover:scale-125 transition-transform text-xl active:scale-95" data-emoji="👏" title="Tepuk Tangan">👏</button>
+<button class="emoji-trigger p-2 hover:scale-125 transition-transform text-xl active:scale-95" data-emoji="😮" title="Kaget!">😮</button>
+<button class="emoji-trigger p-2 hover:scale-125 transition-transform text-xl active:scale-95" data-emoji="👋" title="Halo!">👋</button>
+</div>
+</div>
+<!-- BILAH KONTROL UTAMA (ACTION BAR) -->
+<div class="w-full flex justify-center pb-2 z-20">
+<div class="w-full max-w-2xl px-space-md py-3 rounded-full bg-surface-container-high/95 backdrop-blur-2xl shadow-2xl flex items-center justify-between gap-2 sm:gap-4">
+<!-- 1. Tombol Start / Mulai -->
+<button class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-primary-container text-on-primary font-label-lg text-label-lg shadow-lg hover:brightness-110 active:scale-98 transition-all duration-150" id="startBtn" style="background: linear-gradient(135deg, rgb(168, 85, 247), rgb(147, 51, 234)); color: rgb(255, 255, 255); box-shadow: rgba(168, 85, 247, 0.45) 0px 4px 18px;"><span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span><span class="font-bold">Mulai</span></button>
+<!-- 2. Tombol Next (Core Loop Alur Cepat) -->
+<button class="flex-1 flex items-center justify-center gap-2 py-3 px-5 rounded-full bg-secondary text-on-secondary font-label-lg text-label-lg shadow-lg hover:brightness-110 active:scale-95 transition-all duration-150 font-bold group" id="nextBtn">
+<span class="">Next</span>
+<span class="material-symbols-outlined text-[22px] group-hover:translate-x-0.5 transition-transform">skip_next</span>
+</button>
+<!-- 3. Tombol Stop -->
+<button class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-surface-container text-on-surface hover:bg-surface-bright active:scale-98 transition-all duration-150 font-label-lg text-label-lg shadow-md" id="stopBtn">
+<span class="material-symbols-outlined text-[18px]">stop</span>
+<span class="font-medium">Stop</span>
+</button>
+<!-- 4. Tombol Report -->
+<button class="flex items-center justify-center p-3 rounded-full bg-error-container/70 text-on-error-container hover:bg-error-container transition-colors shadow-md active:scale-95" id="reportModalTrigger" title="Laporkan Perilaku">
+<span class="material-symbols-outlined text-[20px]">report</span>
+</button>
+</div>
+</div>
+<!-- Panel Pengaturan Efek Cepat (MediaPipe Simulation Tray) -->
+<div class="w-full rounded-lg bg-surface-container-low p-space-lg shadow-xl hidden transition-all duration-300" id="effectsDrawer">
+<div class="flex items-center justify-between pb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">tune</span>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Studio MediaPipe &amp; Filter Real-time</h3>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface" id="closeEffectsBtn">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg pt-2">
+<!-- Background Segmentation Filters -->
+<div class="flex flex-col gap-2">
+<span class="font-label-md text-label-md font-semibold text-on-surface-variant">Latar Belakang Cerdas AI</span>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+<button class="bg-filter-pill active-pill px-3 py-2 rounded-xl bg-surface-container-high text-on-surface text-center font-label-md text-label-md hover:bg-surface-bright transition-all shadow-sm" data-bg="normal">
+              Normal
+            </button>
+<button class="bg-filter-pill px-3 py-2 rounded-xl bg-surface-container text-on-surface-variant text-center font-label-md text-label-md hover:bg-surface-bright transition-all shadow-sm" data-bg="blur">
+              Blur Lembut
+            </button>
+<button class="bg-filter-pill px-3 py-2 rounded-xl bg-surface-container text-on-surface-variant text-center font-label-md text-label-md hover:bg-surface-bright transition-all shadow-sm" data-bg="dark">
+              Studio Dark
+            </button>
+<button class="bg-filter-pill px-3 py-2 rounded-xl bg-surface-container text-on-surface-variant text-center font-label-md text-label-md hover:bg-surface-bright transition-all shadow-sm" data-bg="gradient">
+              Gradien Polos
+            </button>
+</div>
+</div>
+<!-- Color Grading / LUTs -->
+<div class="flex flex-col gap-2">
+<span class="font-label-md text-label-md font-semibold text-on-surface-variant">Color Grading Wajah (LUT)</span>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+<button class="tone-pill active-pill px-3 py-2 rounded-xl bg-surface-container-high text-on-surface text-center font-label-md text-label-md hover:bg-surface-bright transition-all shadow-sm" data-tone="original">
+              Asli
+            </button>
+<button class="tone-pill px-3 py-2 rounded-xl bg-surface-container text-on-surface-variant text-center font-label-md text-label-md hover:bg-surface-bright transition-all shadow-sm" data-tone="warm">
+              Warm Golden
+            </button>
+<button class="tone-pill px-3 py-2 rounded-xl bg-surface-container text-on-surface-variant text-center font-label-md text-label-md hover:bg-surface-bright transition-all shadow-sm" data-tone="cyber">
+              Cyber Cool
+            </button>
+<button class="tone-pill px-3 py-2 rounded-xl bg-surface-container text-on-surface-variant text-center font-label-md text-label-md hover:bg-surface-bright transition-all shadow-sm" data-tone="sepia">
+              Vintage Sepia
+            </button>
+<button class="tone-pill px-3 py-2 rounded-xl bg-surface-container text-on-surface-variant text-center font-label-md text-label-md hover:bg-surface-bright transition-all shadow-sm" data-tone="bw">
+              B&amp;W Minimal
+            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Safety Report Modal Sheet -->
+<div class="fixed inset-0 z-50 bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-center p-4 hidden" id="reportModal">
+<div class="w-full max-w-md bg-surface-container-low rounded-lg p-space-xl shadow-2xl flex flex-col gap-space-md">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-error text-[24px]">warning</span>
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Laporkan Partner Saat Ini</h2>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface" id="closeReportBtn">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+        Tindakan ini akan langsung memutuskan sambungan dan mengirim rekam audit keamanan otomatis ke tim kurasi Nextly.
+      </p>
+<form class="flex flex-col gap-2.5" id="reportForm">
+<label class="flex items-center gap-3 p-3 rounded-xl bg-surface-container hover:bg-surface-container-high cursor-pointer transition-colors">
+<input checked="" class="accent-primary h-4 w-4" name="reportReason" type="radio" value="nudity">
+<span class="font-body-md text-body-md text-on-surface">Konten Terlarang / Ketelanjangan</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-xl bg-surface-container hover:bg-surface-container-high cursor-pointer transition-colors">
+<input class="accent-primary h-4 w-4" name="reportReason" type="radio" value="harassment">
+<span class="font-body-md text-body-md text-on-surface">Pelecehan / Ujaran Kebencian</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-xl bg-surface-container hover:bg-surface-container-high cursor-pointer transition-colors">
+<input class="accent-primary h-4 w-4" name="reportReason" type="radio" value="spam">
+<span class="font-body-md text-body-md text-on-surface">Spam / Bot / Promosi Komersial</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-xl bg-surface-container hover:bg-surface-container-high cursor-pointer transition-colors">
+<input class="accent-primary h-4 w-4" name="reportReason" type="radio" value="minor">
+<span class="font-body-md text-body-md text-on-surface">Pelanggaran Perlindungan Anak</span>
+</label>
+<div class="flex items-center gap-3 pt-3">
+<button class="flex-1 py-2.5 rounded-full bg-surface-container text-on-surface font-label-lg text-label-lg hover:bg-surface-bright transition-colors" id="cancelReportBtn" type="button">
+            Batal
+          </button>
+<button class="flex-1 py-2.5 rounded-full bg-error text-on-error font-label-lg text-label-lg font-bold shadow-lg hover:brightness-110 transition-colors" type="submit">
+            Kirim Laporan
+          </button>
+</div>
+</form>
+</div>
+</div>
+<!-- Notification Toast -->
+<div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full bg-surface-container-highest text-on-surface font-label-md text-label-md shadow-2xl flex items-center gap-2 pointer-events-none transition-all duration-300 opacity-0 translate-y-4" id="toastNotification">
+<span class="material-symbols-outlined text-primary text-[18px]">info</span>
+<span id="toastMsg" class="">Tindakan berhasil</span>
+</div>
+</div>
+<script>
+  (function () {
+    // State
+    let isConnected = true;
+    let micMuted = false;
+    let camMuted = false;
+    let secondsElapsed = 161;
+    let timerInterval = null;
+
+    // DOM Elements
+    const matchingOverlay = document.getElementById('matchingOverlay');
+    const partnerIdText = document.getElementById('partnerIdText');
+    const talkTimer = document.getElementById('talkTimer');
+    const streamStatusText = document.getElementById('streamStatusText');
+    const latencyDisplay = document.getElementById('latencyDisplay');
+    const p2pPulse = document.getElementById('p2pPulse');
+    const p2pDot = document.getElementById('p2pDot');
+    
+    const nextBtn = document.getElementById('nextBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const startBtn = document.getElementById('startBtn');
+    const flagReportBtn = document.getElementById('flagReportBtn');
+    const reportModalTrigger = document.getElementById('reportModalTrigger');
+    const reportModal = document.getElementById('reportModal');
+    const closeReportBtn = document.getElementById('closeReportBtn');
+    const cancelReportBtn = document.getElementById('cancelReportBtn');
+    const reportForm = document.getElementById('reportForm');
+
+    const toggleMicBtn = document.getElementById('toggleMicBtn');
+    const toggleCamBtn = document.getElementById('toggleCamBtn');
+    const micIcon = document.getElementById('micIcon');
+    const camIcon = document.getElementById('camIcon');
+    const cameraMutedLayer = document.getElementById('cameraMutedLayer');
+    const localStreamCover = document.getElementById('localStreamCover');
+    
+    const effectsToggleBtn = document.getElementById('effectsToggleBtn');
+    const effectsDrawer = document.getElementById('effectsDrawer');
+    const closeEffectsBtn = document.getElementById('closeEffectsBtn');
+    const activeFilterBadge = document.getElementById('activeFilterBadge');
+    const activeFilterName = document.getElementById('activeFilterName');
+    
+    const toast = document.getElementById('toastNotification');
+    const toastMsg = document.getElementById('toastMsg');
+    const emojiCanvasStage = document.getElementById('emojiCanvasStage');
+
+    // Timer Logic
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        secondsElapsed++;
+        const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
+        const secs = String(secondsElapsed % 60).padStart(2, '0');
+        talkTimer.textContent = `${mins}:${secs}`;
+      }, 1000);
+    }
+    startTimer();
+
+    function showToast(msg) {
+      toastMsg.textContent = msg;
+      toast.classList.remove('opacity-0', 'translate-y-4');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'translate-y-4');
+      }, 2400);
+    }
+
+    // Switch Peer Routine
+    function switchPeer() {
+      if (!isConnected) {
+        startSession();
+        return;
+      }
+
+      // Show radar search overlay
+      matchingOverlay.classList.remove('hidden');
+      streamStatusText.textContent = 'Mencari pasangan baru...';
+      latencyDisplay.textContent = 'Negotiating SDP...';
+      p2pPulse.classList.replace('bg-primary', 'bg-secondary');
+      p2pDot.classList.replace('bg-primary', 'bg-secondary');
+
+      // Emulate rapid matching queue
+      setTimeout(() => {
+        matchingOverlay.classList.add('hidden');
+        const randomId = Math.floor(1000 + Math.random() * 9000);
+        partnerIdText.textContent = `Partner #${randomId}`;
+        secondsElapsed = 0;
+        talkTimer.textContent = '00:00';
+        streamStatusText.textContent = 'P2P Terhubung via WebRTC';
+        latencyDisplay.textContent = `${Math.floor(20 + Math.random() * 25)} ms (Direct P2P)`;
+        p2pPulse.classList.replace('bg-secondary', 'bg-primary');
+        p2pDot.classList.replace('bg-secondary', 'bg-primary');
+        showToast(`Terhubung ke pasangan #${randomId}`);
+      }, 1200);
+    }
+
+    function stopSession() {
+      isConnected = false;
+      matchingOverlay.classList.remove('hidden');
+      matchingOverlay.querySelector('span.font-headline-md').textContent = 'Panggilan Berakhir';
+      matchingOverlay.querySelector('p').textContent = 'Klik tombol "Mulai" untuk kembali ke antrean live chat.';
+      streamStatusText.textContent = 'Terputus';
+      latencyDisplay.textContent = '-- ms';
+      p2pPulse.classList.add('hidden');
+      p2pDot.classList.replace('bg-primary', 'bg-outline');
+      if (timerInterval) clearInterval(timerInterval);
+      showToast('Anda telah meninggalkan antrean.');
+    }
+
+    function startSession() {
+      isConnected = true;
+      matchingOverlay.querySelector('span.font-headline-md').textContent = 'Mencari Pasangan...';
+      matchingOverlay.querySelector('p').textContent = 'Menghubungkan ke ruang WebRTC berikutnya dengan enkripsi peer-to-peer instan.';
+      p2pPulse.classList.remove('hidden');
+      p2pDot.classList.replace('bg-outline', 'bg-primary');
+      switchPeer();
+      startTimer();
+    }
+
+    // Floating Emoji Effect Animation
+    function launchEmoji(emojiChar) {
+      const bubble = document.createElement('div');
+      bubble.textContent = emojiChar;
+      bubble.className = 'absolute text-4xl select-none pointer-events-none transition-all';
+      
+      const randomLeft = Math.floor(20 + Math.random() * 60);
+      bubble.style.left = `${randomLeft}%`;
+      bubble.style.bottom = '10%';
+      bubble.style.opacity = '1';
+      bubble.style.transform = 'translateY(0) scale(0.8)';
+      bubble.style.transition = 'transform 1.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 1.4s ease-out';
+
+      emojiCanvasStage.appendChild(bubble);
+
+      requestAnimationFrame(() => {
+        bubble.style.transform = `translateY(-320px) scale(${1.2 + Math.random() * 0.4}) rotate(${(Math.random() - 0.5) * 40}deg)`;
+        bubble.style.opacity = '0';
+      });
+
+      setTimeout(() => {
+        bubble.remove();
+      }, 1500);
+    }
+
+    // Emoji Bar Listeners
+    document.querySelectorAll('.emoji-trigger').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const char = btn.getAttribute('data-emoji');
+        launchEmoji(char);
+      });
+    });
+
+    // Control Buttons
+    nextBtn.addEventListener('click', switchPeer);
+    stopBtn.addEventListener('click', stopSession);
+    startBtn.addEventListener('click', startSession);
+
+    // Keyboard Shortcuts (Space = Next, Esc = Stop)
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.code === 'Space') {
+        e.preventDefault();
+        switchPeer();
+      } else if (e.code === 'Escape') {
+        e.preventDefault();
+        if (!reportModal.classList.contains('hidden')) {
+          reportModal.classList.add('hidden');
+        } else {
+          stopSession();
+        }
+      }
+    });
+
+    // Mic & Camera Toggles
+    toggleMicBtn.addEventListener('click', () => {
+      micMuted = !micMuted;
+      if (micMuted) {
+        micIcon.textContent = 'mic_off';
+        toggleMicBtn.classList.add('text-error');
+        showToast('Mikrofon dimatikan.');
+      } else {
+        micIcon.textContent = 'mic';
+        toggleMicBtn.classList.remove('text-error');
+        showToast('Mikrofon aktif.');
+      }
+    });
+
+    toggleCamBtn.addEventListener('click', () => {
+      camMuted = !camMuted;
+      if (camMuted) {
+        camIcon.textContent = 'videocam_off';
+        toggleCamBtn.classList.add('text-error');
+        cameraMutedLayer.classList.remove('hidden');
+        showToast('Kamera dimatikan.');
+      } else {
+        camIcon.textContent = 'videocam';
+        toggleCamBtn.classList.remove('text-error');
+        cameraMutedLayer.classList.add('hidden');
+        showToast('Kamera aktif.');
+      }
+    });
+
+    // Report Flow
+    function openReport() {
+      reportModal.classList.remove('hidden');
+    }
+    function closeReport() {
+      reportModal.classList.add('hidden');
+    }
+
+    flagReportBtn.addEventListener('click', openReport);
+    reportModalTrigger.addEventListener('click', openReport);
+    closeReportBtn.addEventListener('click', closeReport);
+    cancelReportBtn.addEventListener('click', closeReport);
+
+    reportForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      closeReport();
+      showToast('Laporan dikirim. Beralih ke pasangan berikutnya...');
+      switchPeer();
+    });
+
+    // Effects Drawer
+    effectsToggleBtn.addEventListener('click', () => {
+      effectsDrawer.classList.toggle('hidden');
+    });
+    closeEffectsBtn.addEventListener('click', () => {
+      effectsDrawer.classList.add('hidden');
+    });
+
+    // Background Filter Simulation
+    document.querySelectorAll('.bg-filter-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.bg-filter-pill').forEach(b => {
+          b.classList.remove('bg-surface-container-high', 'text-on-surface');
+          b.classList.add('bg-surface-container', 'text-on-surface-variant');
+        });
+        btn.classList.add('bg-surface-container-high', 'text-on-surface');
+        btn.classList.remove('bg-surface-container', 'text-on-surface-variant');
+
+        const bgType = btn.getAttribute('data-bg');
+        if (bgType === 'blur') {
+          localStreamCover.style.filter = 'blur(4px)';
+          activeFilterBadge.classList.remove('hidden');
+          activeFilterName.textContent = 'Background Blur';
+        } else if (bgType === 'dark') {
+          localStreamCover.style.filter = 'brightness(0.6) contrast(1.2)';
+          activeFilterBadge.classList.remove('hidden');
+          activeFilterName.textContent = 'Studio Dark';
+        } else if (bgType === 'gradient') {
+          localStreamCover.style.filter = 'hue-rotate(45deg) saturate(1.4)';
+          activeFilterBadge.classList.remove('hidden');
+          activeFilterName.textContent = 'Gradien Virtual';
+        } else {
+          localStreamCover.style.filter = 'none';
+          activeFilterBadge.classList.remove('hidden');
+          activeFilterName.textContent = 'Asli / Normal';
+        }
+        showToast(`Filter: ${btn.textContent.trim()} diterapkan.`);
+      });
+    });
+
+    // Tone LUT Simulation
+    document.querySelectorAll('.tone-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tone-pill').forEach(b => {
+          b.classList.remove('bg-surface-container-high', 'text-on-surface');
+          b.classList.add('bg-surface-container', 'text-on-surface-variant');
+        });
+        btn.classList.add('bg-surface-container-high', 'text-on-surface');
+        btn.classList.remove('bg-surface-container', 'text-on-surface-variant');
+
+        const tone = btn.getAttribute('data-tone');
+        activeFilterBadge.classList.remove('hidden');
+        if (tone === 'warm') {
+          localStreamCover.style.filter = 'sepia(0.3) saturate(1.3) contrast(1.05)';
+          activeFilterName.textContent = 'Warm Golden';
+        } else if (tone === 'cyber') {
+          localStreamCover.style.filter = 'hue-rotate(180deg) saturate(1.2)';
+          activeFilterName.textContent = 'Cyber Cool';
+        } else if (tone === 'sepia') {
+          localStreamCover.style.filter = 'sepia(0.85) contrast(1.1)';
+          activeFilterName.textContent = 'Vintage Sepia';
+        } else if (tone === 'bw') {
+          localStreamCover.style.filter = 'grayscale(1) contrast(1.3)';
+          activeFilterName.textContent = 'B&W Minimal';
+        } else {
+          localStreamCover.style.filter = 'none';
+          activeFilterName.textContent = 'Asli';
+        }
+        showToast(`Grading: ${btn.textContent.trim()} aktif.`);
+      });
+    });
+
+  })();
+</script></main><footer class="w-full bg-surface-container-lowest py-space-xl shadow-[0_-1px_12px_rgba(0,0,0,0.2)]"><div class="w-full px-space-md lg:px-space-xl flex flex-col md:flex-row items-center justify-between gap-space-md"><div class="flex items-center gap-space-sm"><span class="font-headline-sm text-headline-sm font-bold text-on-surface">Nextly</span><span class="font-body-sm text-body-sm text-on-surface-variant">© 2025 Nextly Network. Safe, spontaneous peer-to-peer live video.</span></div><div class="flex items-center gap-space-lg"><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" data-path="community-safety" href="#">Safety Guidelines</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" data-path="home" href="#">Terms of Service</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" data-path="home" href="#">Privacy Policy</a></div></div></footer>
+
+</body></html>

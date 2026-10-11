@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html class="dark" lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <meta content="web_standard" name="shell-type"/>
+  <title>Nextly - Instant Peer Video Chat | Satu Klik, Teman Baru</title>
+  <meta name="description" content="Nextly adalah platform video chat acak 1-lawan-1 instan, gratis, dan ultra-ringan berbasis WebRTC murni langsung di browser tanpa registrasi."/>
+
+  <!-- Fonts & Material Symbols -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+
+  <!-- Tailwind CDN for prototype compatibility -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#0f131c",
+            "surface-dim": "#0f131c",
+            "surface-bright": "#353942",
+            "surface-container-lowest": "#0a0e16",
+            "surface-container-low": "#181c24",
+            "surface-container": "#1c2028",
+            "surface-container-high": "#262a33",
+            "surface-container-highest": "#31353e",
+            "on-surface": "#dfe2ee",
+            "on-surface-variant": "#bbcabf",
+            "outline": "#86948a",
+            "outline-variant": "#3c4a42",
+            "primary": "#4edea3",
+            "primary-container": "#10b981",
+            "on-primary": "#003824",
+            "on-primary-container": "#00422b",
+            "primary-fixed": "#6ffbbe",
+            "secondary": "#4cd7f6",
+            "secondary-container": "#03b5d3",
+            "on-secondary": "#003640",
+            "on-secondary-container": "#00424e",
+            "secondary-fixed": "#acedff",
+            "tertiary": "#ffb2b7",
+            "tertiary-container": "#ff7886",
+            "on-tertiary": "#67001b",
+            "on-tertiary-container": "#780021",
+            "error": "#ffb4ab",
+            "error-container": "#93000a",
+            "on-error": "#690005",
+            "background": "#0f131c",
+            "on-background": "#dfe2ee"
+          },
+          borderRadius: {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "space-2xl": "3rem"
+          },
+          fontFamily: {
+            "display-hero": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-md": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-sm": ["Plus Jakarta Sans", "sans-serif"],
+            "body-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "body-md": ["Plus Jakarta Sans", "sans-serif"],
+            "body-sm": ["Plus Jakarta Sans", "sans-serif"],
+            "label-lg": ["Inter", "sans-serif"],
+            "label-md": ["Inter", "sans-serif"],
+            "label-sm": ["Inter", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="bg-background font-body-md text-on-surface antialiased min-h-screen selection:bg-primary selection:text-on-primary">
+
+  <!-- =========================================================================
+       HEADER NAVIGATION
+       ========================================================================= -->
+  <header class="fixed top-0 left-0 right-0 z-50 w-full bg-surface-container-lowest/80 backdrop-blur-xl shadow-[0_1px_16px_rgba(0,0,0,0.35)] border-b border-white/5">
+    <div class="h-16 w-full px-space-md lg:px-space-xl flex items-center justify-between">
+      <!-- Brand & Online Indicator -->
+      <div class="flex items-center gap-space-lg">
+        <a href="index.html" class="flex items-center gap-space-sm group">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-primary-container to-secondary flex items-center justify-center shadow-md shadow-primary/20 group-hover:scale-105 transition-transform">
+            <span class="material-symbols-outlined text-surface-container-lowest text-[19px] font-bold">arrow_forward</span>
+          </div>
+          <span class="font-headline-md text-xl tracking-tight font-bold text-on-surface select-none">Nextly</span>
+        </a>
+
+        <!-- Live Pulse Badge -->
+        <div class="hidden sm:flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-surface-container-high/90 border border-white/5">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-primary shadow-[0_0_8px_#4edea3]"></span>
+          </span>
+          <span class="font-label-md text-xs text-on-surface font-semibold tracking-wide online-counter-val">2.418 online</span>
+        </div>
+      </div>
+
+      <!-- Center Nav Links -->
+      <nav class="hidden md:flex items-center gap-1 p-1 rounded-full bg-surface-container-low/70 border border-white/5">
+        <a class="px-space-md py-1.5 transition-all duration-150 bg-primary-container text-on-primary-container font-semibold rounded-full text-xs" href="index.html">Home</a>
+        <a class="px-space-md py-1.5 rounded-full font-label-lg text-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="nextly.html">Nextly (Video Chat)</a>
+        <button class="px-space-md py-1.5 rounded-full font-label-lg text-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" id="openSafetyNavBtn" type="button">Panduan Komunitas</button>
+      </nav>
+
+      <!-- Right Utility Actions -->
+      <div class="flex items-center gap-space-sm">
+        <div class="hidden xl:flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-surface-container-high/60 text-secondary border border-secondary/20">
+          <span class="material-symbols-outlined text-[15px]">verified_user</span>
+          <span class="font-label-sm text-[11px] text-on-surface-variant font-medium">Encrypted P2P</span>
+        </div>
+        <button aria-label="Informasi P2P" class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors" id="infoBtn" type="button" title="Informasi WebRTC P2P">
+          <span class="material-symbols-outlined text-[19px]">help_outline</span>
+        </button>
+        <a href="nextly.html" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-primary-container text-on-primary-container font-label-md text-xs font-bold hover:brightness-110 active:scale-95 transition-all shadow-md">
+          <span class="material-symbols-outlined text-[16px]">play_circle</span>
+          <span>Buka Chat</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       MAIN CONTENT
+       ========================================================================= -->
+  <main class="w-full pt-16 bg-surface min-h-[calc(100vh-64px)]">
+    <div class="flex flex-col w-full">
+      <!-- Dynamic Ambient Glow Backdrops -->
+      <div class="relative w-full overflow-hidden">
+        <div class="absolute -top-32 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[140px] pointer-events-none"></div>
+        <div class="absolute top-48 right-10 w-[480px] h-[480px] bg-secondary/10 rounded-full blur-[160px] pointer-events-none"></div>
+        <div class="absolute top-[800px] left-10 w-72 h-72 bg-tertiary-container/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <!-- =====================================================================
+             HERO SECTION
+             ===================================================================== -->
+        <section class="relative w-full px-space-md lg:px-space-xl pt-space-xl pb-space-2xl">
+          <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-space-xl lg:gap-space-2xl">
+            
+            <!-- Left Hero Content -->
+            <div class="flex-1 flex flex-col items-start space-y-space-lg z-10">
+              
+              <!-- Live Telemetry Capsule -->
+              <div class="inline-flex items-center gap-space-sm px-space-md py-1.5 rounded-full bg-surface-container-high/90 border border-white/5 shadow-sm">
+                <span class="relative flex h-2.5 w-2.5">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-80"></span>
+                  <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+                </span>
+                <span class="font-label-md text-xs text-on-surface font-semibold tracking-wide online-counter-val">2.418 Orang Online</span>
+                <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+                <span class="font-label-md text-xs text-secondary font-medium flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[14px]">bolt</span> Wait: &lt; 2 detik
+                </span>
+              </div>
+
+              <!-- Hero Headline -->
+              <div class="space-y-space-sm">
+                <p class="font-label-md text-xs text-primary font-bold uppercase tracking-widest">Random Peer-to-Peer Video WebRTC</p>
+                <h1 class="font-display-hero text-3xl sm:text-5xl lg:text-5xl text-on-surface font-extrabold tracking-tight leading-tight">
+                  Satu klik, temukan <br class="hidden sm:inline"/>
+                  <span class="bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">teman ngobrol baru.</span>
+                </h1>
+              </div>
+
+              <!-- Hero Subtitle -->
+              <p class="font-body-lg text-base text-on-surface-variant max-w-xl leading-relaxed">
+                Random video chat 1-on-1 instan, gratis, dan ultra-ringan langsung di browser Anda. Didukung arsitektur WebRTC murni tanpa registrasi panjang, tanpa install aplikasi, dan tanpa server video.
+              </p>
+
+              <!-- Action Pod / Age & Consent Box -->
+              <div class="w-full max-w-lg p-space-lg rounded-2xl bg-surface-container-low border border-white/5 shadow-2xl space-y-space-md">
+                <!-- Age & Consent Checkbox -->
+                <label class="flex items-start gap-space-sm cursor-pointer select-none group">
+                  <input class="mt-1 w-4 h-4 rounded bg-surface-container-highest checked:bg-primary accent-primary cursor-pointer transition-all" id="ageConsentCheck" type="checkbox" checked/>
+                  <span class="font-body-sm text-xs text-on-surface-variant group-hover:text-on-surface transition-colors leading-relaxed">
+                    Saya mengonfirmasi bahwa saya berusia <strong class="text-on-surface font-semibold">18+ tahun</strong> dan menyetujui seluruh <button type="button" class="text-primary hover:underline font-semibold" id="openTermsLink">Ketentuan Komunitas &amp; Etika Obrolan</button>.
+                  </span>
+                </label>
+
+                <!-- Main CTA Button -->
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-sm">
+                  <a class="relative overflow-hidden flex-1 group inline-flex items-center justify-center gap-space-sm px-space-xl py-3.5 rounded-full btn-primary-gradient text-on-primary-container font-label-lg text-sm font-bold shadow-lg" href="nextly.html" id="startChatBtn">
+                    <span class="relative z-10 flex items-center gap-2">
+                      <span class="material-symbols-outlined text-[22px] transition-transform group-hover:translate-x-0.5" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+                      Mulai Chat Sekarang
+                    </span>
+                  </a>
+                  <div class="flex items-center justify-center gap-2 px-space-md py-3 rounded-full bg-surface-container text-on-surface-variant border border-white/5">
+                    <span class="material-symbols-outlined text-primary text-[18px]">lock</span>
+                    <span class="font-label-sm text-[11px] font-semibold uppercase tracking-wider">No Log</span>
+                  </div>
+                </div>
+
+                <!-- Error notice if unchecked -->
+                <div class="hidden text-error font-body-sm text-xs flex items-center gap-1.5 pt-1" id="consentNotice">
+                  <span class="material-symbols-outlined text-[16px]">info</span>
+                  Centang konfirmasi 18+ untuk mengaktifkan video chat.
+                </div>
+              </div>
+
+              <!-- Micro Specs / Trust Badges -->
+              <div class="flex flex-wrap items-center gap-space-lg text-on-surface-variant pt-2 text-xs">
+                <div class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-secondary text-[18px]">speed</span>
+                  <span>Ultra Low Latency (&lt;60ms)</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-primary text-[18px]">no_accounts</span>
+                  <span>Tanpa Daftar Akun</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-tertiary text-[18px]">security</span>
+                  <span>End-to-End DTLS/SRTP</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Right Hero Interactive Stream Preview Mockup -->
+            <div class="flex-1 w-full max-w-xl lg:max-w-none relative">
+              <div class="relative w-full rounded-2xl p-space-sm bg-surface-container-high/60 border border-white/10 shadow-2xl backdrop-blur-xl">
+                <!-- Terminal Header -->
+                <div class="flex items-center justify-between px-space-md py-2 mb-2 bg-surface-container-lowest/80 rounded-t-xl">
+                  <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-error/80 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-secondary-container/80 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-primary/80 inline-block"></span>
+                    <span class="font-label-sm text-[11px] text-on-surface-variant ml-2 font-mono">NEXTLY_SESSION // P2P_ACTIVE</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-label-sm text-[11px] font-semibold flex items-center gap-1">
+                      <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> LIVE
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Dual Split-Screen Mockup Viewport -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm relative aspect-[4/3] md:aspect-[16/10] overflow-hidden rounded-xl bg-surface-container-lowest border border-white/5">
+                  
+                  <!-- Left Peer Pane (Remote Stranger) -->
+                  <div class="relative w-full h-full overflow-hidden bg-surface-container group">
+                    <img class="w-full h-full object-cover" alt="Remote Peer Mockup" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"/>
+                    
+                    <!-- Remote Peer Overlays -->
+                    <div class="absolute top-3 left-3 px-space-sm py-1 rounded-full bg-surface-container-lowest/80 backdrop-blur-md flex items-center gap-1.5 shadow-sm text-xs">
+                      <span>🇮🇩</span>
+                      <span class="font-label-sm text-[11px] text-on-surface font-medium">Jakarta, ID</span>
+                    </div>
+                    <div class="absolute top-3 right-3 px-space-sm py-1 rounded-full bg-surface-container-lowest/80 backdrop-blur-md flex items-center gap-1 shadow-sm text-secondary text-xs">
+                      <span class="material-symbols-outlined text-[13px]">wifi</span>
+                      <span class="font-label-sm text-[11px] font-mono">34ms</span>
+                    </div>
+
+                    <!-- Floating Emoji Reaction Layer on Remote Feed -->
+                    <div class="absolute inset-0 pointer-events-none overflow-hidden" id="mockupReactions">
+                      <span class="absolute bottom-16 left-1/4 text-2xl animate-bounce">🔥</span>
+                      <span class="absolute bottom-24 right-1/3 text-2xl opacity-90 -translate-y-6 transition-transform">✨</span>
+                      <span class="absolute bottom-32 left-1/2 text-2xl opacity-80 -translate-y-12">👏</span>
+                    </div>
+
+                    <!-- Mic indicator -->
+                    <div class="absolute bottom-3 left-3 flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-surface-container-lowest/80 backdrop-blur-md">
+                      <span class="material-symbols-outlined text-primary text-[14px]">mic</span>
+                      <div class="flex items-end gap-0.5 h-3">
+                        <span class="w-1 bg-primary rounded-full h-2 animate-pulse"></span>
+                        <span class="w-1 bg-primary rounded-full h-3 animate-pulse"></span>
+                        <span class="w-1 bg-primary rounded-full h-1.5 animate-pulse"></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Right Peer Pane (Local Preview with MediaPipe Blur Mockup) -->
+                  <div class="relative w-full h-full overflow-hidden bg-surface-container">
+                    <img class="w-full h-full object-cover filter blur-[1px]" alt="Local User Mockup" src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=800&q=80"/>
+                    
+                    <!-- Filter Status Badge -->
+                    <div class="absolute top-3 left-3 px-space-sm py-1 rounded-full bg-surface-container-lowest/80 backdrop-blur-md flex items-center gap-1.5 shadow-sm text-primary">
+                      <span class="material-symbols-outlined text-[13px]">blur_on</span>
+                      <span class="font-label-sm text-[11px] font-medium">MediaPipe Blur ON</span>
+                    </div>
+
+                    <!-- Local Feed Badge -->
+                    <div class="absolute top-3 right-3 px-space-sm py-1 rounded-full bg-surface-container-lowest/80 backdrop-blur-md shadow-sm">
+                      <span class="font-label-sm text-[11px] text-on-surface-variant font-medium">Kamu (Local)</span>
+                    </div>
+
+                    <!-- Quick Effects Picker Pill -->
+                    <div class="absolute bottom-3 right-3 flex items-center gap-1 p-1 rounded-full bg-surface-container-lowest/85 backdrop-blur-md shadow-md">
+                      <div class="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[13px]">auto_fix_high</span>
+                      </div>
+                      <div class="w-6 h-6 rounded-full hover:bg-surface-container-high text-on-surface-variant flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[13px]">wb_sunny</span>
+                      </div>
+                      <div class="w-6 h-6 rounded-full hover:bg-surface-container-high text-on-surface-variant flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[13px]">contrast</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Floating Bottom In-Stream Mockup Deck -->
+                  <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 px-space-md py-1.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-xl shadow-xl z-20 border border-white/10">
+                    <div class="p-1.5 rounded-full text-on-surface-variant">
+                      <span class="material-symbols-outlined text-[17px]">sentiment_satisfied</span>
+                    </div>
+                    <div class="h-4 w-[1px] bg-outline-variant"></div>
+                    <a href="nextly.html" class="px-space-md py-1 rounded-full bg-primary-container text-on-primary-container font-label-md text-xs font-bold flex items-center gap-1 shadow-sm hover:brightness-110">
+                      <span>Next</span>
+                      <span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+                    </a>
+                    <div class="h-4 w-[1px] bg-outline-variant"></div>
+                    <div class="p-1.5 rounded-full text-error">
+                      <span class="material-symbols-outlined text-[17px]">shield</span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Decorative Floater Stats Card -->
+              <div class="-mt-6 -ml-4 relative z-30 inline-flex items-center gap-space-md p-space-md rounded-2xl bg-surface-container border border-white/5 shadow-2xl">
+                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                  <span class="material-symbols-outlined text-[22px]">hub</span>
+                </div>
+                <div>
+                  <div class="font-headline-sm text-sm font-bold text-on-surface">Zero Data Stored</div>
+                  <div class="font-body-sm text-xs text-on-surface-variant">Stream langsung antar perangkat, tanpa rekam video.</div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+        <!-- =====================================================================
+             QUICK STATS STRIP
+             ===================================================================== -->
+        <section class="w-full bg-surface-container-low border-y border-white/5 py-space-lg px-space-md lg:px-space-xl">
+          <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-space-lg text-center md:text-left">
+            <div class="space-y-1">
+              <div class="font-display-hero text-3xl font-extrabold text-primary">100%</div>
+              <div class="font-label-md text-xs text-on-surface-variant">WebRTC Native Peer-to-Peer</div>
+            </div>
+            <div class="space-y-1">
+              <div class="font-display-hero text-3xl font-extrabold text-secondary">&lt; 2s</div>
+              <div class="font-label-md text-xs text-on-surface-variant">Waktu Rata-rata Matchmaking</div>
+            </div>
+            <div class="space-y-1">
+              <div class="font-display-hero text-3xl font-extrabold text-tertiary">0 MB</div>
+              <div class="font-label-md text-xs text-on-surface-variant">Aplikasi yang Perlu Diunduh</div>
+            </div>
+            <div class="space-y-1">
+              <div class="font-display-hero text-3xl font-extrabold text-primary-fixed">24/7</div>
+              <div class="font-label-md text-xs text-on-surface-variant">Proteksi &amp; Moderasi Cepat</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =====================================================================
+             CORE FEATURES BENTO GRID
+             ===================================================================== -->
+        <section class="w-full px-space-md lg:px-space-xl py-space-2xl">
+          <div class="max-w-7xl mx-auto space-y-space-xl">
+            <!-- Section Header -->
+            <div class="max-w-2xl space-y-space-xs">
+              <span class="font-label-md text-xs uppercase tracking-widest text-primary font-bold">Teknologi Terdepan</span>
+              <h2 class="font-headline-lg text-2xl sm:text-3xl font-bold text-on-surface">Direkayasa untuk Kecepatan, Ekspresi &amp; Privasi</h2>
+              <p class="font-body-lg text-sm text-on-surface-variant">Nikmati kenyamanan tatap muka digital tanpa friksi login rumit atau kecemasan privasi data.</p>
+            </div>
+
+            <!-- Bento 4 Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-lg">
+              <!-- Feature 1: P2P WebRTC -->
+              <div class="p-space-lg rounded-2xl bg-surface-container border border-white/5 flex flex-col justify-between hover:bg-surface-container-high transition-all duration-200 group shadow-md">
+                <div class="space-y-space-md">
+                  <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                    <span class="material-symbols-outlined text-[26px]">cable</span>
+                  </div>
+                  <h3 class="font-headline-md text-lg font-bold text-on-surface">100% Peer-to-Peer (WebRTC)</h3>
+                  <p class="font-body-md text-xs text-on-surface-variant leading-relaxed">
+                    Jalur video dan audio ditransmisikan langsung antar-browser menggunakan WebRTC. Tidak ada relay video yang disimpan di server sentral kami.
+                  </p>
+                </div>
+                <div class="mt-space-lg pt-space-md border-t border-white/5 flex items-center gap-1.5 text-primary font-label-md text-xs font-semibold">
+                  <span class="material-symbols-outlined text-[15px]">verified</span>
+                  <span>Encrypted Direct Stream</span>
+                </div>
+              </div>
+
+              <!-- Feature 2: MediaPipe Filters -->
+              <div class="p-space-lg rounded-2xl bg-surface-container border border-white/5 flex flex-col justify-between hover:bg-surface-container-high transition-all duration-200 group shadow-md">
+                <div class="space-y-space-md">
+                  <div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:scale-110 transition-transform">
+                    <span class="material-symbols-outlined text-[26px]">blur_linear</span>
+                  </div>
+                  <h3 class="font-headline-md text-lg font-bold text-on-surface">Filter &amp; Efek Cepat</h3>
+                  <p class="font-body-md text-xs text-on-surface-variant leading-relaxed">
+                    Jaga privasi ruanganmu dengan background blur instan serta preset warm/cool grading berbasis Google MediaPipe client-side tanpa beban server.
+                  </p>
+                </div>
+                <div class="mt-space-lg pt-space-md border-t border-white/5 flex items-center gap-1.5 text-secondary font-label-md text-xs font-semibold">
+                  <span class="material-symbols-outlined text-[15px]">auto_awesome</span>
+                  <span>Client-side AI Processing</span>
+                </div>
+              </div>
+
+              <!-- Feature 3: DataChannel Emoji Reactions -->
+              <div class="p-space-lg rounded-2xl bg-surface-container border border-white/5 flex flex-col justify-between hover:bg-surface-container-high transition-all duration-200 group shadow-md">
+                <div class="space-y-space-md">
+                  <div class="w-12 h-12 rounded-full bg-tertiary-container/20 flex items-center justify-center text-tertiary group-hover:scale-110 transition-transform">
+                    <span class="material-symbols-outlined text-[26px]">add_reaction</span>
+                  </div>
+                  <h3 class="font-headline-md text-lg font-bold text-on-surface">Emoji Reaksi Melayang</h3>
+                  <p class="font-body-md text-xs text-on-surface-variant leading-relaxed">
+                    Kirim apresiasi seketika dengan semburan partikel emoji melayang via WebRTC DataChannel berkecepatan tinggi tanpa delay kompresi video.
+                  </p>
+                </div>
+                <div class="mt-space-lg pt-space-md border-t border-white/5 flex items-center gap-1.5 text-tertiary font-label-md text-xs font-semibold">
+                  <span class="material-symbols-outlined text-[15px]">bolt</span>
+                  <span>Ultra-fast DataChannel</span>
+                </div>
+              </div>
+
+              <!-- Feature 4: Privacy & Rapid Moderation -->
+              <div class="p-space-lg rounded-2xl bg-surface-container border border-white/5 flex flex-col justify-between hover:bg-surface-container-high transition-all duration-200 group shadow-md">
+                <div class="space-y-space-md">
+                  <div class="w-12 h-12 rounded-full bg-error/15 flex items-center justify-center text-error group-hover:scale-110 transition-transform">
+                    <span class="material-symbols-outlined text-[26px]">gshield</span>
+                  </div>
+                  <h3 class="font-headline-md text-lg font-bold text-on-surface">Privasi &amp; Moderasi Cepat</h3>
+                  <p class="font-body-md text-xs text-on-surface-variant leading-relaxed">
+                    Tindakan proteksi instan: tombol 1-klik Skip &amp; Report, filter pelecehan, dan ban IP otomatis di memori server untuk menjaga kenyamanan bersama.
+                  </p>
+                </div>
+                <div class="mt-space-lg pt-space-md border-t border-white/5 flex items-center gap-1.5 text-error font-label-md text-xs font-semibold">
+                  <span class="material-symbols-outlined text-[15px]">lock_person</span>
+                  <span>Zero Tolerance Rules</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Upcoming Feature Card: Nextly Room (as defined in Plan Section 1 & 12) -->
+            <div class="relative overflow-hidden p-space-lg lg:p-space-xl rounded-2xl bg-surface-container-low border border-white/5 shadow-xl">
+              <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-secondary/5 rounded-full blur-3xl pointer-events-none"></div>
+              <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-space-lg">
+                <div class="flex items-start gap-space-md max-w-3xl">
+                  <div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant shrink-0 mt-1">
+                    <span class="material-symbols-outlined text-[26px]">groups</span>
+                  </div>
+                  <div class="space-y-space-xs">
+                    <div class="flex items-center gap-space-sm flex-wrap">
+                      <h3 class="font-headline-md text-lg font-bold text-on-surface">Nextly Room (Group Hangout)</h3>
+                      <span class="px-space-sm py-0.5 rounded-full bg-surface-container-highest text-secondary font-label-sm text-[10px] font-bold uppercase tracking-wider">
+                        Segera Hadir
+                      </span>
+                      <span class="px-space-sm py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-[10px]">
+                        Roadmap Bagian 12
+                      </span>
+                    </div>
+                    <p class="font-body-md text-xs text-on-surface-variant leading-relaxed">
+                      Bosan 1-on-1? Fitur obrolan multi-user berbasis ruang pertemuan instan (Mesh/SFU) untuk hangout santai, diskusi minat bersama, dan nobar peer-to-peer tanpa perlu install aplikasi.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Disabled Action Pill -->
+                <div class="shrink-0">
+                  <button class="cursor-not-allowed opacity-60 inline-flex items-center gap-2 px-space-lg py-2.5 rounded-full bg-surface-container-highest text-on-surface font-label-md text-xs font-semibold shadow-inner" disabled type="button">
+                    <span class="material-symbols-outlined text-[16px]">lock_clock</span>
+                    <span>Dalam Pengembangan</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- =====================================================================
+             3-STEP FLOW DIAGRAM
+             ===================================================================== -->
+        <section class="w-full px-space-md lg:px-space-xl py-space-xl bg-surface-container-lowest border-y border-white/5">
+          <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-space-xl">
+            <div class="max-w-lg space-y-space-sm">
+              <span class="font-label-md text-xs uppercase tracking-wider text-secondary font-bold">Interaksi Spontan</span>
+              <h2 class="font-headline-lg text-2xl font-bold text-on-surface">Temukan Percakapan Bermakna dari Mana Saja</h2>
+              <p class="font-body-md text-xs text-on-surface-variant leading-relaxed">
+                Setiap klik "Next" membuka jendela ke perspektif baru. Bertemu musisi, mahasiswa, programmer, dan teman bercerita dari berbagai wilayah secara instan.
+              </p>
+            </div>
+
+            <!-- 3-Step Flow Diagram -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-space-md w-full md:w-auto">
+              <div class="p-space-md rounded-2xl bg-surface-container border border-white/5 space-y-2 text-center flex flex-col items-center">
+                <span class="w-8 h-8 rounded-full bg-primary/20 text-primary font-bold flex items-center justify-center font-label-md text-xs">1</span>
+                <div class="font-headline-sm text-sm font-semibold text-on-surface">Buka Link</div>
+                <div class="font-body-sm text-xs text-on-surface-variant">Izinkan akses kamera &amp; mikrofon di browser.</div>
+              </div>
+              <div class="p-space-md rounded-2xl bg-surface-container border border-white/5 space-y-2 text-center flex flex-col items-center">
+                <span class="w-8 h-8 rounded-full bg-secondary/20 text-secondary font-bold flex items-center justify-center font-label-md text-xs">2</span>
+                <div class="font-headline-sm text-sm font-semibold text-on-surface">Satu Klik</div>
+                <div class="font-body-sm text-xs text-on-surface-variant">Tekan "Mulai Chat", sistem pairing &lt; 2 detik.</div>
+              </div>
+              <div class="p-space-md rounded-2xl bg-surface-container border border-white/5 space-y-2 text-center flex flex-col items-center">
+                <span class="w-8 h-8 rounded-full bg-primary-container/20 text-primary font-bold flex items-center justify-center font-label-md text-xs">3</span>
+                <div class="font-headline-sm text-sm font-semibold text-on-surface">Ngobrol Asik</div>
+                <div class="font-body-sm text-xs text-on-surface-variant">Kirim reaksi, ganti filter, atau lompat ke peer baru.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =====================================================================
+             COMMUNITY SAFETY & RULES SECTION
+             ===================================================================== -->
+        <section class="w-full px-space-md lg:px-space-xl py-space-2xl" id="community-safety">
+          <div class="max-w-7xl mx-auto space-y-space-lg">
+            <div class="p-space-xl rounded-2xl bg-surface-container-low border border-white/5 shadow-2xl space-y-space-lg">
+              <div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+                <div class="flex items-center gap-space-md">
+                  <div class="w-12 h-12 rounded-full bg-error/20 flex items-center justify-center text-error">
+                    <span class="material-symbols-outlined text-[26px]">policy</span>
+                  </div>
+                  <div>
+                    <h3 class="font-headline-md text-lg font-bold text-on-surface">Pedoman Komunitas &amp; Keamanan Nextly</h3>
+                    <p class="font-body-sm text-xs text-on-surface-variant">Ruang nyaman untuk interaksi manusia nyata. Kami menerapkan nol toleransi terhadap pelanggaran.</p>
+                  </div>
+                </div>
+                <button class="inline-flex items-center gap-2 text-primary hover:underline font-label-md text-xs font-semibold" id="openSafetyModalBtn" type="button">
+                  <span>Baca Panduan Lengkap</span>
+                  <span class="material-symbols-outlined text-[15px]">arrow_outward</span>
+                </button>
+              </div>
+
+              <!-- Rules Mosaic -->
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+                <div class="p-space-md rounded-2xl bg-surface-container border border-white/5 space-y-space-xs">
+                  <div class="flex items-center gap-2 text-error">
+                    <span class="material-symbols-outlined text-[18px]">no_adult_content</span>
+                    <span class="font-label-lg text-sm font-bold">18+ &amp; Larangan Eksplisit</span>
+                  </div>
+                  <p class="font-body-sm text-xs text-on-surface-variant leading-relaxed">
+                    Dilarang keras menampilkan konten ketelanjangan, pornografi, aktivitas seksual, atau zat terlarang. Pelanggaran berakibat pemblokiran perangkat langsung.
+                  </p>
+                </div>
+                <div class="p-space-md rounded-2xl bg-surface-container border border-white/5 space-y-space-xs">
+                  <div class="flex items-center gap-2 text-primary">
+                    <span class="material-symbols-outlined text-[18px]">handshake</span>
+                    <span class="font-label-lg text-sm font-bold">Saling Menghargai</span>
+                  </div>
+                  <p class="font-body-sm text-xs text-on-surface-variant leading-relaxed">
+                    Hargai teman bicaramu. Ujaran kebencian, perundungan siber (cyberbullying), rasisme, pelecehan verbal, dan ancaman kekerasan dilarang keras.
+                  </p>
+                </div>
+                <div class="p-space-md rounded-2xl bg-surface-container border border-white/5 space-y-space-xs">
+                  <div class="flex items-center gap-2 text-secondary">
+                    <span class="material-symbols-outlined text-[18px]">shield_with_heart</span>
+                    <span class="font-label-lg text-sm font-bold">Privasi Pribadi Dijaga</span>
+                  </div>
+                  <p class="font-body-sm text-xs text-on-surface-variant leading-relaxed">
+                    Jangan pernah membagikan informasi rahasia seperti nomor rekening, alamat rumah lengkap, atau kode OTP kepada siapapun di dalam video chat.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Quick Safety Protocol Notification -->
+              <div class="flex items-center justify-between p-space-md rounded-xl bg-surface-container-highest border border-white/5 text-on-surface-variant text-xs">
+                <div class="flex items-center gap-space-sm">
+                  <span class="material-symbols-outlined text-primary text-[18px]">verified_user</span>
+                  <span>Merasa tidak nyaman dengan teman bicara? Gunakan tombol <strong>"Next"</strong> atau laporkan segera via tombol <strong>Shield/Report</strong> di layar video.</span>
+                </div>
+                <span class="font-label-sm text-[10px] text-outline hidden sm:inline font-mono">SEC-MOD-V2</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =====================================================================
+             BOTTOM LAUNCH PAD
+             ===================================================================== -->
+        <section class="w-full px-space-md lg:px-space-xl pb-space-2xl">
+          <div class="max-w-5xl mx-auto rounded-3xl p-space-xl lg:p-space-2xl bg-gradient-to-br from-surface-container-high via-surface-container to-surface-container-low border border-white/10 text-center space-y-space-md shadow-2xl relative overflow-hidden">
+            <div class="absolute inset-0 bg-primary/5 pointer-events-none"></div>
+            <div class="relative z-10 max-w-2xl mx-auto space-y-space-sm">
+              <h2 class="font-display-hero text-2xl sm:text-4xl font-extrabold text-on-surface">
+                Siap berkenalan dengan orang baru?
+              </h2>
+              <p class="font-body-lg text-sm text-on-surface-variant">
+                Tanpa formulir panjang. Kamera aktif, klik mulai, dan jalin obrolan seru dalam hitungan detik.
+              </p>
+              <div class="pt-space-md flex flex-col sm:flex-row items-center justify-center gap-space-md">
+                <a class="w-full sm:w-auto inline-flex items-center justify-center gap-space-sm px-space-xl py-3.5 rounded-full btn-primary-gradient text-on-primary-container font-label-lg text-sm font-bold shadow-lg" href="nextly.html">
+                  <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                  Mulai Ngobrol Sekarang
+                </a>
+                <button class="w-full sm:w-auto inline-flex items-center justify-center gap-space-sm px-space-lg py-3.5 rounded-full bg-surface-container-highest hover:bg-surface-bright text-on-surface font-label-lg text-sm font-semibold transition-all border border-white/5" id="howItWorksBtn" type="button">
+                  <span class="material-symbols-outlined text-[18px]">help_outline</span>
+                  Pelajari Cara Kerja
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       SAFETY & TERMS MODAL DIALOG
+       ========================================================================= -->
+  <div class="fixed inset-0 z-50 bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-center p-4 hidden" id="safetyModal">
+    <div class="w-full max-w-lg bg-surface-container-low border border-white/10 rounded-2xl p-space-xl shadow-2xl flex flex-col gap-space-md max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-2 border-b border-white/5">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-[24px]">verified_user</span>
+          <h2 class="font-headline-sm text-base font-bold text-on-surface">Pedoman Komunitas &amp; Syarat Nextly</h2>
+        </div>
+        <button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface" id="closeSafetyModalBtn" type="button">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <div class="space-y-4 font-body-sm text-xs text-on-surface-variant leading-relaxed">
+        <div>
+          <h4 class="font-bold text-on-surface text-sm mb-1">1. Batasan Usia 18+</h4>
+          <p>Layanan Nextly secara tegas diperuntukkan bagi pengguna yang berusia 18 tahun ke atas. Pengguna di bawah umur tidak diperkenankan mengakses platform ini.</p>
+        </div>
+        <div>
+          <h4 class="font-bold text-on-surface text-sm mb-1">2. Nol Toleransi Konten Tidak Pantas</h4>
+          <p>Dilarang keras menyiarkan pornografi, ketelanjangan, pelecehan seksual, kekerasan fisik, obat terlarang, atau konten berbahaya. Sistem moderasi dan laporan pengguna aktif 24 jam untuk memblokir pelanggar.</p>
+        </div>
+        <div>
+          <h4 class="font-bold text-on-surface text-sm mb-1">3. Tanpa Perekaman &amp; Privasi Terjaga</h4>
+          <p>Video chat berjalan langsung antar peramban melalui WebRTC P2P terenkripsi (DTLS/SRTP). Nextly tidak menyimpan arsip video percakapan Anda di server.</p>
+        </div>
+        <div>
+          <h4 class="font-bold text-on-surface text-sm mb-1">4. Hak Menolak &amp; Melewati (Next)</h4>
+          <p>Anda memegang kendali penuh atas sesi Anda. Kapan pun Anda merasa kurang nyaman, tekan tombol "Next" atau "Report" untuk memutuskan percakapan seketika.</p>
+        </div>
+        <div>
+          <h4 class="font-bold text-on-surface text-sm mb-1">5. Kamera Wajib Selalu Aktif</h4>
+          <p>Untuk menjaga obrolan tatap muka yang adil, transparan, dan bebas dari layar hitam, kamera video pengguna wajib selalu menyala selama menggunakan Nextly.</p>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-white/5 flex justify-end">
+        <button class="px-space-lg py-2 rounded-full bg-primary-container text-on-primary-container font-label-md text-xs font-bold hover:brightness-110 transition-all" id="understandSafetyBtn" type="button">
+          Saya Mengerti &amp; Setuju
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       FOOTER
+       ========================================================================= -->
+  <footer class="w-full bg-surface-container-lowest py-space-xl border-t border-white/5">
+    <div class="w-full px-space-md lg:px-space-xl flex flex-col md:flex-row items-center justify-between gap-space-md">
+      <div class="flex items-center gap-space-sm">
+        <span class="font-headline-sm text-sm font-bold text-on-surface">Nextly</span>
+        <span class="font-body-sm text-xs text-on-surface-variant">© 2026 Nextly Network. Safe, spontaneous peer-to-peer live video.</span>
+      </div>
+      <div class="flex items-center gap-space-lg text-xs">
+        <button class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" id="footerSafetyBtn" type="button">Safety Guidelines</button>
+        <button class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" id="footerTermsBtn" type="button">Terms of Service</button>
+        <button class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" id="footerPrivacyBtn" type="button">Privacy Policy</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/common.js"></script>
+  <script>
+    (function () {
+      const ageConsentCheck = document.getElementById('ageConsentCheck');
+      const startChatBtn = document.getElementById('startChatBtn');
+      const consentNotice = document.getElementById('consentNotice');
+      const safetyModal = document.getElementById('safetyModal');
+      const closeSafetyModalBtn = document.getElementById('closeSafetyModalBtn');
+      const understandSafetyBtn = document.getElementById('understandSafetyBtn');
+      const openSafetyNavBtn = document.getElementById('openSafetyNavBtn');
+      const openSafetyModalBtn = document.getElementById('openSafetyModalBtn');
+      const openTermsLink = document.getElementById('openTermsLink');
+      const howItWorksBtn = document.getElementById('howItWorksBtn');
+
+      function openModal() {
+        if (safetyModal) safetyModal.classList.remove('hidden');
+      }
+      function closeModal() {
+        if (safetyModal) safetyModal.classList.add('hidden');
+      }
+
+      if (openSafetyNavBtn) openSafetyNavBtn.addEventListener('click', openModal);
+      if (openSafetyModalBtn) openSafetyModalBtn.addEventListener('click', openModal);
+      if (openTermsLink) openTermsLink.addEventListener('click', openModal);
+      if (howItWorksBtn) howItWorksBtn.addEventListener('click', openModal);
+      if (document.getElementById('footerSafetyBtn')) document.getElementById('footerSafetyBtn').addEventListener('click', openModal);
+      if (document.getElementById('footerTermsBtn')) document.getElementById('footerTermsBtn').addEventListener('click', openModal);
+      if (document.getElementById('footerPrivacyBtn')) document.getElementById('footerPrivacyBtn').addEventListener('click', openModal);
+      if (closeSafetyModalBtn) closeSafetyModalBtn.addEventListener('click', closeModal);
+      if (understandSafetyBtn) understandSafetyBtn.addEventListener('click', closeModal);
+
+      // Age consent validation
+      if (ageConsentCheck && startChatBtn) {
+        startChatBtn.addEventListener('click', function (e) {
+          if (!ageConsentCheck.checked) {
+            e.preventDefault();
+            if (consentNotice) consentNotice.classList.remove('hidden');
+            ageConsentCheck.focus();
+            if (window.NextlyCommon) {
+              window.NextlyCommon.showToast('Centang konfirmasi 18+ terlebih dahulu', 'warning');
+            }
+          }
+        });
+
+        ageConsentCheck.addEventListener('change', function () {
+          if (this.checked && consentNotice) {
+            consentNotice.classList.add('hidden');
+          }
+        });
+      }
+
+      // Micro interactive floating emoji generator for the preview mockup
+      const mockupContainer = document.getElementById('mockupReactions');
+      if (mockupContainer) {
+        const emojiSet = ['🔥', '✨', '👏', '😂', '👋', '❤️'];
+        setInterval(() => {
+          const emoji = document.createElement('span');
+          emoji.innerText = emojiSet[Math.floor(Math.random() * emojiSet.length)];
+          emoji.className = 'absolute text-2xl transition-all duration-1000 ease-out pointer-events-none select-none';
+
+          const randomLeft = Math.floor(Math.random() * 70) + 15;
+          emoji.style.left = randomLeft + '%';
+          emoji.style.bottom = '1rem';
+          emoji.style.opacity = '1';
+          emoji.style.transform = 'translateY(0px) scale(0.8)';
+
+          mockupContainer.appendChild(emoji);
+
+          requestAnimationFrame(() => {
+            emoji.style.transform = 'translateY(-90px) scale(1.2)';
+            emoji.style.opacity = '0';
+          });
+
+          setTimeout(() => {
+            emoji.remove();
+          }, 1200);
+        }, 2200);
+      }
+    })();
+  </script>
+</body>
+</html>
