@@ -12,6 +12,7 @@
 
 const http = require('http');
 const path = require('path');
+const os = require('os');
 const express = require('express');
 const { Server } = require('socket.io');
 const cors = require('cors');
@@ -325,11 +326,26 @@ io.on('connection', (socket) => {
   });
 });
 
-// Start Server
-server.listen(PORT, () => {
+// Helper: Deteksi IP address lokal untuk akses LAN/Wi-Fi
+function getLocalNetworkIp() {
+  const interfaces = os.networkInterfaces();
+  for (const devName of Object.keys(interfaces)) {
+    for (const iface of interfaces[devName]) {
+      if (iface.family === 'IPv4' && !iface.internal) {
+        return iface.address;
+      }
+    }
+  }
+  return 'localhost';
+}
+
+// Start Server on all network interfaces (0.0.0.0)
+server.listen(PORT, '0.0.0.0', () => {
+  const localIp = getLocalNetworkIp();
   console.log(`=======================================================`);
-  console.log(`⚡ Nextly Signaling & WebRTC Server running on port ${PORT}`);
-  console.log(`🌐 Web UI: http://localhost:${PORT}`);
-  console.log(`📹 Video Chat: http://localhost:${PORT}/nextly.html`);
+  console.log(`⚡ Nextly Signaling & WebRTC Server Aktif (Port: ${PORT})`);
+  console.log(`💻 Local Host:       http://localhost:${PORT}`);
+  console.log(`📱 Jaringan LAN/WiFi: http://${localIp}:${PORT}`);
+  console.log(`📹 Video Chat Room:  http://${localIp}:${PORT}/nextly.html`);
   console.log(`=======================================================`);
 });

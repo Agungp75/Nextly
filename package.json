@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "node server/index.js",
-    "server": "node server/index.js"
+    "server": "node server/index.js",
+    "tunnel": "npx localtunnel --port 3000"
   },
   "keywords": [
     "webrtc",
