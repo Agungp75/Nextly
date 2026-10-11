@@ -409,3 +409,50 @@ body {
     min-height: 260px;
   }
 }
+
+/* ==========================================================================
+   CHAT COLUMN & MESSAGE BUBBLES
+   ========================================================================== */
+
+.chat-panel {
+  background: rgba(24, 28, 36, 0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border-bright);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9);
+}
+
+.chat-bubble-local {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border-radius: 1rem 1rem 0.25rem 1rem;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+  word-break: break-word;
+}
+
+.chat-bubble-remote {
+  background: var(--color-surface-container-high);
+  color: var(--color-on-surface);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem 1rem 1rem 0.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  word-break: break-word;
+}
+
+.chat-bubble-system {
+  background: rgba(38, 42, 51, 0.85);
+  color: var(--color-on-surface-variant);
+  border: 1px solid var(--glass-border);
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  padding: 0.25rem 0.75rem;
+}
+
+/* Chat scrollbar */
+.chat-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.chat-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-surface-container-highest);
+  border-radius: 9999px;
+}

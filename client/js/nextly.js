@@ -38,6 +38,11 @@
   let availableVideoDevices = [];
   let currentDeviceIndex = 0;
 
+  // Live Text Chat States
+  let isChatOpen = false;
+  let unreadChatCount = 0;
+  let simulatedChatTimer = null;
+
   // Helpers
   let callTimer = null;
   let localVisualizer = null;
@@ -84,6 +89,20 @@
     nextBtn: document.getElementById('nextBtn'),
     stopBtn: document.getElementById('stopBtn'),
     reportModalTrigger: document.getElementById('reportModalTrigger'),
+
+    // Live chat drawer & controls
+    chatDrawer: document.getElementById('chatDrawer'),
+    chatToggleBtn: document.getElementById('chatToggleBtn'),
+    chatToggleNavBtn: document.getElementById('chatToggleNavBtn'),
+    chatBadge: document.getElementById('chatBadge'),
+    chatNavBadge: document.getElementById('chatNavBadge'),
+    closeChatBtn: document.getElementById('closeChatBtn'),
+    chatPartnerTag: document.getElementById('chatPartnerTag'),
+    chatMessagesList: document.getElementById('chatMessagesList'),
+    chatEmptyState: document.getElementById('chatEmptyState'),
+    chatForm: document.getElementById('chatForm'),
+    chatInput: document.getElementById('chatInput'),
+    sendChatBtn: document.getElementById('sendChatBtn'),
 
     // Effects drawer
     effectsToggleBtn: document.getElementById('effectsToggleBtn'),
@@ -460,6 +479,8 @@
       elements.remoteVideo.srcObject = null;
     }
 
+    clearChat();
+
     isConnected = false;
     isConnecting = false;
   }
@@ -611,6 +632,16 @@
         window.NextlyReactions.bindDataChannel(channel);
       }
     };
+    channel.addEventListener('message', (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === 'chat' && data.text) {
+          receiveChatMessage(data);
+        }
+      } catch (err) {
+        // Not a chat payload
+      }
+    });
     channel.onclose = () => {
       console.log('WebRTC DataChannel closed.');
     };
@@ -636,6 +667,219 @@
         console.warn('replaceTrack error:', err);
       }
     }
+  }
+
+  // =========================================================================
+  // LIVE TEXT CHAT (WebRTC DataChannel P2P Text Messaging)
+  // =========================================================================
+
+  function openChat() {
+    isChatOpen = true;
+    if (elements.chatDrawer) {
+      elements.chatDrawer.classList.remove('hidden');
+    }
+    resetUnreadChat();
+    if (elements.chatInput) {
+      elements.chatInput.focus();
+    }
+    scrollChatToBottom();
+  }
+
+  function closeChat() {
+    isChatOpen = false;
+    if (elements.chatDrawer) {
+      elements.chatDrawer.classList.add('hidden');
+    }
+  }
+
+  function toggleChat() {
+    if (isChatOpen) {
+      closeChat();
+    } else {
+      openChat();
+    }
+  }
+
+  function resetUnreadChat() {
+    unreadChatCount = 0;
+    if (elements.chatBadge) {
+      elements.chatBadge.classList.add('hidden');
+      elements.chatBadge.textContent = '0';
+    }
+    if (elements.chatNavBadge) {
+      elements.chatNavBadge.classList.add('hidden');
+      elements.chatNavBadge.textContent = '0';
+    }
+  }
+
+  function incrementUnreadChat() {
+    unreadChatCount++;
+    const displayCount = unreadChatCount > 9 ? '9+' : String(unreadChatCount);
+    if (elements.chatBadge) {
+      elements.chatBadge.classList.remove('hidden');
+      elements.chatBadge.textContent = displayCount;
+    }
+    if (elements.chatNavBadge) {
+      elements.chatNavBadge.classList.remove('hidden');
+      elements.chatNavBadge.textContent = displayCount;
+    }
+  }
+
+  function scrollChatToBottom() {
+    if (elements.chatMessagesList) {
+      elements.chatMessagesList.scrollTop = elements.chatMessagesList.scrollHeight;
+    }
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function appendChatMessage({ text, isMe, timestamp, senderName }) {
+    if (!elements.chatMessagesList) return;
+
+    if (elements.chatEmptyState) {
+      elements.chatEmptyState.style.display = 'none';
+    }
+
+    const timeStr = new Date(timestamp || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const msgWrapper = document.createElement('div');
+    msgWrapper.className = `flex flex-col ${isMe ? 'items-end' : 'items-start'} mb-2.5`;
+
+    const bubble = document.createElement('div');
+    bubble.className = `${isMe ? 'chat-bubble-local' : 'chat-bubble-remote'} max-w-[85%] text-xs px-3.5 py-2 break-words leading-relaxed`;
+    bubble.innerHTML = escapeHtml(text);
+
+    const meta = document.createElement('span');
+    meta.className = `text-[9px] text-on-surface-variant/75 mt-0.5 ${isMe ? 'mr-1' : 'ml-1'} font-mono`;
+    meta.textContent = `${timeStr} · ${isMe ? 'Anda' : (senderName || 'Partner')}`;
+
+    msgWrapper.appendChild(bubble);
+    msgWrapper.appendChild(meta);
+    elements.chatMessagesList.appendChild(msgWrapper);
+
+    scrollChatToBottom();
+  }
+
+  function appendSystemChatMessage(text) {
+    if (!elements.chatMessagesList) return;
+
+    if (elements.chatEmptyState) {
+      elements.chatEmptyState.style.display = 'none';
+    }
+
+    const sysEl = document.createElement('div');
+    sysEl.className = 'text-center my-2';
+    sysEl.innerHTML = `<span class="chat-bubble-system text-[10px] text-on-surface-variant/80 px-2.5 py-0.5 rounded-full inline-block border border-white/5">${escapeHtml(text)}</span>`;
+    elements.chatMessagesList.appendChild(sysEl);
+    scrollChatToBottom();
+  }
+
+  function clearChat() {
+    if (elements.chatMessagesList) {
+      elements.chatMessagesList.innerHTML = '';
+      if (elements.chatEmptyState) {
+        elements.chatEmptyState.style.display = 'block';
+        elements.chatMessagesList.appendChild(elements.chatEmptyState);
+      }
+    }
+    resetUnreadChat();
+    if (simulatedChatTimer) {
+      clearTimeout(simulatedChatTimer);
+      simulatedChatTimer = null;
+    }
+  }
+
+  function sendChatMessage(text) {
+    const cleanText = (text || '').trim();
+    if (!cleanText) return;
+
+    if (!isConnected && !isConnecting) {
+      if (window.NextlyCommon) {
+        window.NextlyCommon.showToast('Klik "Mulai" terlebih dahulu untuk mengirim pesan ke partner.', 'warning');
+      }
+      return;
+    }
+
+    // Append to local message view
+    appendChatMessage({
+      text: cleanText,
+      isMe: true,
+      timestamp: Date.now()
+    });
+
+    if (window.NextlyCommon) {
+      window.NextlyCommon.playSound('pop');
+    }
+
+    // Transmit over WebRTC DataChannel if live
+    if (dataChannel && dataChannel.readyState === 'open') {
+      try {
+        dataChannel.send(JSON.stringify({
+          type: 'chat',
+          text: cleanText,
+          timestamp: Date.now()
+        }));
+      } catch (err) {
+        console.warn('Failed to send chat over DataChannel:', err);
+      }
+    }
+
+    // If in simulated demo mode or disconnected peer, simulate partner response
+    if (isSimulatedDemo || !dataChannel || dataChannel.readyState !== 'open') {
+      triggerSimulatedPartnerChat(cleanText);
+    }
+  }
+
+  function receiveChatMessage(data) {
+    if (!data || !data.text) return;
+
+    if (!isChatOpen) {
+      incrementUnreadChat();
+      if (window.NextlyCommon) {
+        window.NextlyCommon.playSound('chat');
+        window.NextlyCommon.showToast(`Pesan baru: "${data.text.slice(0, 32)}${data.text.length > 32 ? '...' : ''}"`, 'info', 3000);
+      }
+    } else {
+      if (window.NextlyCommon) {
+        window.NextlyCommon.playSound('chat');
+      }
+    }
+
+    appendChatMessage({
+      text: data.text,
+      isMe: false,
+      timestamp: data.timestamp,
+      senderName: currentPartnerId || 'Partner'
+    });
+  }
+
+  function triggerSimulatedPartnerChat(userPrompt = '') {
+    if (simulatedChatTimer) clearTimeout(simulatedChatTimer);
+
+    const replies = [
+      'Halo juga! Salam kenal ya 😊',
+      'Aku dari Bandung nih, kamu lagi di mana?',
+      'Suara dan videomu jernih banget di sini 👍',
+      'Haha iya bener banget, seru ya!',
+      'Lagi santai aja nih malam ini sambil cobain Nextly.',
+      'Keren banget fiturnya, lancar tanpa delay!'
+    ];
+
+    const randomDelay = Math.floor(1100 + Math.random() * 900);
+    simulatedChatTimer = setTimeout(() => {
+      const randomReply = replies[Math.floor(Math.random() * replies.length)];
+      receiveChatMessage({
+        text: randomReply,
+        timestamp: Date.now()
+      });
+    }, randomDelay);
   }
 
   // =========================================================================
@@ -706,9 +950,14 @@
       elements.p2pDot.style.backgroundColor = '#4edea3';
       elements.p2pDot.style.boxShadow = '0 0 10px #4edea3';
     }
+    const pName = partnerName || `Partner #${currentPartnerId || '8294'}`;
     if (elements.partnerIdText) {
-      elements.partnerIdText.textContent = partnerName || `Partner #${currentPartnerId || '8294'}`;
+      elements.partnerIdText.textContent = pName;
     }
+    if (elements.chatPartnerTag) {
+      elements.chatPartnerTag.textContent = pName;
+    }
+    appendSystemChatMessage(`Tersambung dengan ${pName}. Obrolan privat & terenkripsi P2P.`);
 
     if (callTimer) callTimer.start();
   }
@@ -788,6 +1037,34 @@
         const emoji = btn.getAttribute('data-emoji');
         if (window.NextlyReactions && emoji) {
           window.NextlyReactions.triggerReaction(emoji);
+        }
+      });
+    });
+
+    // Live Text Chat Drawer & Form
+    if (elements.chatToggleBtn) elements.chatToggleBtn.addEventListener('click', toggleChat);
+    if (elements.chatToggleNavBtn) elements.chatToggleNavBtn.addEventListener('click', toggleChat);
+    if (elements.closeChatBtn) elements.closeChatBtn.addEventListener('click', closeChat);
+
+    if (elements.chatForm) {
+      elements.chatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (elements.chatInput) {
+          const text = elements.chatInput.value;
+          elements.chatInput.value = '';
+          sendChatMessage(text);
+          elements.chatInput.focus();
+        }
+      });
+    }
+
+    // Quick chat suggestion chips
+    document.querySelectorAll('.quick-text-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const text = chip.getAttribute('data-text');
+        if (text) {
+          sendChatMessage(text);
+          if (elements.chatInput) elements.chatInput.focus();
         }
       });
     });

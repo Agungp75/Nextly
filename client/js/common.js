@@ -163,6 +163,15 @@ const NextlyCommon = (function () {
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
         osc.start(now);
         osc.stop(now + 0.21);
+      } else if (type === 'chat') {
+        // Soft crystal notification chime for live chat messages
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(784, now); // G5
+        osc.frequency.exponentialRampToValueAtTime(1046.5, now + 0.08); // C6
+        gain.gain.setValueAtTime(0.07, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+        osc.start(now);
+        osc.stop(now + 0.19);
       }
     } catch (err) {
       // Audio playback restrictions or user hasn't interacted yet
