@@ -192,7 +192,7 @@
         </div>
 
         <!-- Dual Video Screen Viewport Grid (1:1 Aspect Desktop / Stacked Mobile) -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-space-md w-full relative min-h-[420px] lg:h-[540px]">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-space-md w-full relative min-h-[360px] lg:h-[460px]">
           
           <!-- ===================================================================
                SISI KIRI: Video Lawan Bicara (Partner Video - Remote Stream)
@@ -401,9 +401,78 @@
         </div>
 
         <!-- ===================================================================
+             KOLOM CHAT MENYATU DENGAN NEXTLY (Embedded In-Page P2P Live Chat)
+             =================================================================== -->
+        <section class="w-full rounded-2xl chat-panel flex flex-col shadow-2xl transition-all duration-300 border border-white/10 my-space-sm overflow-hidden" id="chatDrawer">
+          
+          <!-- Chat Header Bar -->
+          <div class="flex items-center justify-between px-space-md py-3 border-b border-white/10 bg-surface-container-low/60">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-full bg-secondary/20 text-secondary flex items-center justify-center shadow-sm">
+                <span class="material-symbols-outlined text-[19px]">chat_bubble</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="font-headline-sm text-sm font-bold text-on-surface">Kolom Chat Langsung</h3>
+                  <span class="font-label-sm text-[11px] px-2.5 py-0.5 rounded-full bg-surface-container-highest text-secondary border border-white/5 font-semibold" id="chatPartnerTag">Partner</span>
+                </div>
+                <span class="text-[11px] text-on-surface-variant flex items-center gap-1.5 mt-0.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-primary inline-block shadow-[0_0_6px_#4edea3]"></span>
+                  P2P Terenkripsi (Tanpa Log Server · Riwayat Otomatis Bersih Saat Next)
+                </span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button class="flex items-center gap-1 px-3 py-1 rounded-full bg-surface-container hover:bg-surface-bright text-on-surface-variant hover:text-on-surface text-xs font-label-md transition-colors border border-white/5" id="clearChatBtn" type="button" title="Bersihkan riwayat obrolan">
+                <span class="material-symbols-outlined text-[15px]">delete_sweep</span>
+                <span class="hidden sm:inline">Bersihkan</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Chat Message History List (Scrollable Area) -->
+          <div class="p-space-md overflow-y-auto space-y-2.5 chat-scroll h-52 sm:h-64" id="chatMessagesList">
+            <!-- Empty state notice -->
+            <div class="text-center py-8 px-4 space-y-2" id="chatEmptyState">
+              <div class="w-12 h-12 rounded-full bg-surface-container-high mx-auto flex items-center justify-center text-secondary shadow-sm">
+                <span class="material-symbols-outlined text-[24px]">waving_hand</span>
+              </div>
+              <p class="font-label-md text-sm font-semibold text-on-surface">Belum ada obrolan</p>
+              <p class="font-body-sm text-xs text-on-surface-variant max-w-md mx-auto leading-relaxed">
+                Ketik pesan atau klik saran cepat di bawah untuk menyapa lawan bicaramu! Pesan terkirim instan dan otomatis dibersihkan saat berganti teman bicara.
+              </p>
+            </div>
+          </div>
+
+          <!-- Chat Input Form & Quick Suggestion Chips -->
+          <div class="p-space-md border-t border-white/10 bg-surface-container-lowest/80">
+            <!-- Quick Suggestion Chips -->
+            <div class="flex items-center gap-2 pb-2.5 overflow-x-auto no-scrollbar">
+              <span class="text-[11px] text-on-surface-variant whitespace-nowrap font-label-sm">Saran Cepat:</span>
+              <button class="quick-text-chip px-3 py-1 rounded-full bg-surface-container text-xs hover:bg-surface-container-highest transition-colors text-on-surface border border-white/5 whitespace-nowrap active:scale-95" data-text="Halo! Salam kenal 👋" type="button">Halo 👋</button>
+              <button class="quick-text-chip px-3 py-1 rounded-full bg-surface-container text-xs hover:bg-surface-container-highest transition-colors text-on-surface border border-white/5 whitespace-nowrap active:scale-95" data-text="Dari kota mana nih? 📍" type="button">Dari mana? 📍</button>
+              <button class="quick-text-chip px-3 py-1 rounded-full bg-surface-container text-xs hover:bg-surface-container-highest transition-colors text-on-surface border border-white/5 whitespace-nowrap active:scale-95" data-text="Suaramu jelas banget! 🔊" type="button">Suara jernih 🔊</button>
+              <button class="quick-text-chip px-3 py-1 rounded-full bg-surface-container text-xs hover:bg-surface-container-highest transition-colors text-on-surface border border-white/5 whitespace-nowrap active:scale-95" data-text="Haha seru juga ya 😂" type="button">Haha 😂</button>
+              <button class="quick-text-chip px-3 py-1 rounded-full bg-surface-container text-xs hover:bg-surface-container-highest transition-colors text-on-surface border border-white/5 whitespace-nowrap active:scale-95" data-text="Keren banget filternya! ✨" type="button">Keren ✨</button>
+            </div>
+
+            <!-- Chat Form Bar -->
+            <form class="flex items-center gap-2 sm:gap-3" id="chatForm">
+              <input class="flex-1 bg-surface-container-high/90 border border-white/10 rounded-full px-4 py-2.5 text-xs sm:text-sm text-on-surface placeholder:text-on-surface-variant/70 focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/50 transition-all shadow-inner" id="chatInput" placeholder="Ketik pesan untuk lawan bicara... (Tekan Enter untuk kirim)" maxlength="200" autocomplete="off" type="text"/>
+              <button class="h-10 px-4 rounded-full bg-secondary text-on-secondary hover:brightness-110 active:scale-95 flex items-center justify-center gap-1.5 shadow-lg transition-all shrink-0 font-label-md text-xs sm:text-sm font-semibold" id="sendChatBtn" title="Kirim Pesan" type="submit">
+                <span>Kirim</span>
+                <span class="material-symbols-outlined text-[17px]">send</span>
+              </button>
+            </form>
+          </div>
+
+        </section>
+
+        <!-- ===================================================================
              PANEL PENGATURAN EFEK CEPAT (Studio MediaPipe & Filter Real-time)
              =================================================================== -->
-        <div class="w-full rounded-2xl bg-surface-container-low border border-white/10 p-space-lg shadow-2xl hidden transition-all duration-300" id="effectsDrawer">
+        <div class="w-full rounded-2xl bg-surface-container-low border border-white/10 p-space-lg shadow-2xl hidden transition-all duration-300 mb-8" id="effectsDrawer">
           <div class="flex items-center justify-between pb-3 border-b border-white/5">
             <div class="flex items-center gap-2">
               <span class="material-symbols-outlined text-secondary text-[22px]">tune</span>
@@ -464,68 +533,6 @@
                 </button>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- ===================================================================
-             KOLOM CHAT INTERAKTIF (P2P Text Chat Column / Drawer)
-             =================================================================== -->
-        <div class="fixed bottom-24 right-4 sm:right-8 z-40 w-[92vw] sm:w-80 md:w-96 rounded-2xl chat-panel flex flex-col shadow-2xl transition-all duration-300 hidden border border-white/10" id="chatDrawer" style="max-height: 480px;">
-          <!-- Chat Header -->
-          <div class="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-surface-container-low/50 rounded-t-2xl">
-            <div class="flex items-center gap-2">
-              <div class="w-8 h-8 rounded-full bg-secondary/20 text-secondary flex items-center justify-center">
-                <span class="material-symbols-outlined text-[18px]">chat_bubble</span>
-              </div>
-              <div>
-                <div class="flex items-center gap-1.5">
-                  <h3 class="font-headline-sm text-xs font-bold text-on-surface">Kolom Chat</h3>
-                  <span class="font-label-sm text-[10px] px-2 py-0.2 rounded-full bg-surface-container-highest text-secondary border border-white/5" id="chatPartnerTag">Partner</span>
-                </div>
-                <span class="text-[10px] text-on-surface-variant flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>
-                  P2P Terenkripsi (No Log)
-                </span>
-              </div>
-            </div>
-            <div class="flex items-center gap-1">
-              <button class="w-7 h-7 rounded-full bg-surface-container hover:bg-surface-bright flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors" id="closeChatBtn" title="Tutup Chat" type="button">
-                <span class="material-symbols-outlined text-[16px]">close</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Chat Message History List -->
-          <div class="flex-1 p-3 overflow-y-auto space-y-2.5 chat-scroll min-h-[220px] max-h-[280px]" id="chatMessagesList">
-            <!-- Empty state notice -->
-            <div class="text-center py-6 px-4 space-y-1.5" id="chatEmptyState">
-              <div class="w-10 h-10 rounded-full bg-surface-container-high mx-auto flex items-center justify-center text-secondary">
-                <span class="material-symbols-outlined text-[20px]">waving_hand</span>
-              </div>
-              <p class="font-label-md text-xs font-semibold text-on-surface">Belum ada obrolan</p>
-              <p class="font-body-sm text-[11px] text-on-surface-variant leading-relaxed">
-                Kirim pesan singkat untuk menyapa teman bicaramu! Pesan terhapus otomatis saat ganti lawan bicara.
-              </p>
-            </div>
-          </div>
-
-          <!-- Chat Input Form & Quick Chips -->
-          <div class="p-3 border-t border-white/10 bg-surface-container-lowest/80 rounded-b-2xl">
-            <!-- Quick Suggestion Chips -->
-            <div class="flex items-center gap-1.5 pb-2 overflow-x-auto no-scrollbar">
-              <span class="text-[10px] text-on-surface-variant whitespace-nowrap">Cepat:</span>
-              <button class="quick-text-chip px-2 py-0.5 rounded-full bg-surface-container text-[11px] hover:bg-surface-container-highest transition-colors text-on-surface border border-white/5 whitespace-nowrap" data-text="Halo! Salam kenal 👋" type="button">Halo 👋</button>
-              <button class="quick-text-chip px-2 py-0.5 rounded-full bg-surface-container text-[11px] hover:bg-surface-container-highest transition-colors text-on-surface border border-white/5 whitespace-nowrap" data-text="Dari kota mana nih? 📍" type="button">Dari mana? 📍</button>
-              <button class="quick-text-chip px-2 py-0.5 rounded-full bg-surface-container text-[11px] hover:bg-surface-container-highest transition-colors text-on-surface border border-white/5 whitespace-nowrap" data-text="Suaramu jelas banget! 🔊" type="button">Suara jernih 🔊</button>
-              <button class="quick-text-chip px-2 py-0.5 rounded-full bg-surface-container text-[11px] hover:bg-surface-container-highest transition-colors text-on-surface border border-white/5 whitespace-nowrap" data-text="Haha seru juga ya 😂" type="button">Haha 😂</button>
-            </div>
-
-            <form class="flex items-center gap-2" id="chatForm">
-              <input class="flex-1 bg-surface-container-high/90 border border-white/10 rounded-full px-3.5 py-2 text-xs text-on-surface placeholder:text-on-surface-variant/70 focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/50 transition-all" id="chatInput" placeholder="Ketik pesan... (Enter)" maxlength="200" autocomplete="off" type="text"/>
-              <button class="w-8 h-8 rounded-full bg-secondary text-on-secondary hover:brightness-110 active:scale-95 flex items-center justify-center shadow-md transition-all shrink-0" id="sendChatBtn" title="Kirim Pesan" type="submit">
-                <span class="material-symbols-outlined text-[16px]">send</span>
-              </button>
-            </form>
           </div>
         </div>
 

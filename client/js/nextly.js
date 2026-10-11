@@ -90,12 +90,13 @@
     stopBtn: document.getElementById('stopBtn'),
     reportModalTrigger: document.getElementById('reportModalTrigger'),
 
-    // Live chat drawer & controls
+    // Live chat section & controls
     chatDrawer: document.getElementById('chatDrawer'),
     chatToggleBtn: document.getElementById('chatToggleBtn'),
     chatToggleNavBtn: document.getElementById('chatToggleNavBtn'),
     chatBadge: document.getElementById('chatBadge'),
     chatNavBadge: document.getElementById('chatNavBadge'),
+    clearChatBtn: document.getElementById('clearChatBtn'),
     closeChatBtn: document.getElementById('closeChatBtn'),
     chatPartnerTag: document.getElementById('chatPartnerTag'),
     chatMessagesList: document.getElementById('chatMessagesList'),
@@ -670,13 +671,12 @@
   }
 
   // =========================================================================
-  // LIVE TEXT CHAT (WebRTC DataChannel P2P Text Messaging)
+  // LIVE TEXT CHAT (WebRTC DataChannel P2P Text Messaging - Embedded In-Page)
   // =========================================================================
 
-  function openChat() {
-    isChatOpen = true;
+  function focusChat() {
     if (elements.chatDrawer) {
-      elements.chatDrawer.classList.remove('hidden');
+      elements.chatDrawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
     resetUnreadChat();
     if (elements.chatInput) {
@@ -685,19 +685,18 @@
     scrollChatToBottom();
   }
 
+  function openChat() {
+    focusChat();
+  }
+
   function closeChat() {
-    isChatOpen = false;
-    if (elements.chatDrawer) {
-      elements.chatDrawer.classList.add('hidden');
+    if (elements.chatInput) {
+      elements.chatInput.blur();
     }
   }
 
   function toggleChat() {
-    if (isChatOpen) {
-      closeChat();
-    } else {
-      openChat();
-    }
+    focusChat();
   }
 
   function resetUnreadChat() {
@@ -801,10 +800,7 @@
     if (!cleanText) return;
 
     if (!isConnected && !isConnecting) {
-      if (window.NextlyCommon) {
-        window.NextlyCommon.showToast('Klik "Mulai" terlebih dahulu untuk mengirim pesan ke partner.', 'warning');
-      }
-      return;
+      handleStart();
     }
 
     // Append to local message view
@@ -840,11 +836,12 @@
   function receiveChatMessage(data) {
     if (!data || !data.text) return;
 
-    if (!isChatOpen) {
+    const isInputFocused = elements.chatInput && document.activeElement === elements.chatInput;
+    if (!isInputFocused) {
       incrementUnreadChat();
       if (window.NextlyCommon) {
         window.NextlyCommon.playSound('chat');
-        window.NextlyCommon.showToast(`Pesan baru: "${data.text.slice(0, 32)}${data.text.length > 32 ? '...' : ''}"`, 'info', 3000);
+        window.NextlyCommon.showToast(`Pesan baru dari Partner: "${data.text.slice(0, 32)}${data.text.length > 32 ? '...' : ''}"`, 'info', 3000);
       }
     } else {
       if (window.NextlyCommon) {
@@ -1041,10 +1038,22 @@
       });
     });
 
-    // Live Text Chat Drawer & Form
+    // Live Text Chat Embedded Section & Form
     if (elements.chatToggleBtn) elements.chatToggleBtn.addEventListener('click', toggleChat);
     if (elements.chatToggleNavBtn) elements.chatToggleNavBtn.addEventListener('click', toggleChat);
     if (elements.closeChatBtn) elements.closeChatBtn.addEventListener('click', closeChat);
+    if (elements.clearChatBtn) {
+      elements.clearChatBtn.addEventListener('click', () => {
+        clearChat();
+        if (window.NextlyCommon) {
+          window.NextlyCommon.showToast('Riwayat obrolan dibersihkan.', 'info');
+        }
+      });
+    }
+
+    if (elements.chatInput) {
+      elements.chatInput.addEventListener('focus', resetUnreadChat);
+    }
 
     if (elements.chatForm) {
       elements.chatForm.addEventListener('submit', (e) => {
